@@ -1,3 +1,6 @@
+// Install: npm install openai
+// Run:     node openai.js
+
 const OpenAI = require("openai");
 
 const client = new OpenAI({
