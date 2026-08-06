@@ -903,15 +903,14 @@ class Program {
         }
         timeBadge.textContent = `${ms}ms`;
       } catch (err) {
-        if (/Failed to fetch|NetworkError|CORS/.test(err.message)) {
-          output.textContent = "Error: Browser fetch blocked by CORS / Network policy.\n\nThe required WAF headers cannot be sent directly from browser JS due to browser security restrictions.\n\nUse the generated cURL command below in your terminal — it bypasses this restriction completely.";
-          statusBadge.textContent = 'CORS Block';
-          statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-amber-950 text-amber-400 border border-amber-800';
-        } else {
-          output.textContent = 'Error: ' + err.message;
-          statusBadge.textContent = 'Network Error';
-          statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-rose-950 text-rose-400 border border-rose-800';
-        }
+        statusBadge.textContent = 'CORS / WAF Blocked';
+        statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-amber-950 text-amber-400 border border-amber-800';
+        output.textContent = JSON.stringify({
+          error: "Browser fetch blocked by CORS / Cloudflare WAF policy",
+          message: "Browsers prohibit sending spoofed client headers (User-Agent, Originator, Version).",
+          solution: "Copy & run the generated cURL command below in your terminal to test live with your API key."
+        }, null, 2);
+        showToast('Use cURL command below in terminal');
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<span>Send</span>`;
