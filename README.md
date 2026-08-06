@@ -2,6 +2,8 @@
 
 Use AgentRouter as an OpenAI-compatible API endpoint in your own apps, websites, or bots.
 
+> 💡 **Interactive Playground & Dashboard**: Open [`index.html`](index.html) in your browser for a live test dashboard, auto-filled code snippets, and bug reporting.
+
 ---
 
 ## Get an API Key
