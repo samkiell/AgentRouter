@@ -35,4 +35,5 @@ Use at your own risk. Never commit your real API key.
 
 ---
 
-Made by **ѕαмкιєℓ.∂єν** · [ѕαмкιєℓ.∂єν](https://samkiel.dev)
+Made with garri💔 by **ѕαмкιєℓ.∂єν** 
+Portfolio · [ѕαмкιєℓ.∂єν](https://samkiel.dev)
