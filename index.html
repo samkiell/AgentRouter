@@ -3,1289 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgentRouter Direct API — Interactive Guide & Dashboard</title>
-  <meta name="description" content="Test AgentRouter models, explore code snippets in 7 languages, bypass WAF headers, and debug common errors." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <title>AgentRouter Guide · SAMKIEL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #07070b;
-      --surface: #0e0f16;
-      --card: rgba(255,255,255,0.03);
-      --border: rgba(255,255,255,0.07);
-      --border-focus: rgba(99,102,241,0.55);
-      --accent: #6366f1;
-      --accent-glow: rgba(99,102,241,0.18);
-      --cyan: #06b6d4;
-      --text: #f1f5f9;
-      --muted: #4e5566;
-      --muted2: #8892a4;
-      --success: #10b981;
-      --error: #f43f5e;
-      --code-bg: #090a10;
-      --mono: 'JetBrains Mono', monospace;
-      --sans: 'Inter', system-ui, sans-serif;
-      --r: 12px;
-      --r-sm: 8px;
-    }
-
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.12) 0%, transparent 100%);
-    }
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(7,7,11,0.78);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem; height: 58px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .logo {
-      display: flex; align-items: center; gap: 9px;
-      font-weight: 700; font-size: 0.95rem;
-      color: var(--text); text-decoration: none;
-    }
-    .logo-pulse {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
-      animation: pulse 2.2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.4)} }
-    .nav-links { display: flex; align-items: center; gap: 1.25rem; }
-    .nav-link {
-      color: var(--muted2); text-decoration: none;
-      font-size: 0.85rem; font-weight: 500;
-      display: flex; align-items: center; gap: 5px;
-      transition: color .2s;
-    }
-    .nav-link:hover { color: var(--text); }
-    .nav-link svg { width: 15px; height: 15px; }
-
-    .hero {
-      text-align: center; padding: 4.5rem 1.5rem 2.5rem;
-      max-width: 680px; margin: 0 auto;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(99,102,241,0.1);
-      border: 1px solid rgba(99,102,241,0.25);
-      color: #a5b4fc; font-size: .72rem; font-weight: 600;
-      padding: 4px 12px; border-radius: 999px;
-      letter-spacing: .06em; text-transform: uppercase;
-      margin-bottom: 1.4rem;
-    }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.25rem);
-      font-weight: 700; letter-spacing: -.035em; line-height: 1.1;
-      margin-bottom: .9rem;
-      background: linear-gradient(130deg, #f1f5f9 0%, #a5b4fc 45%, #67e8f9 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero p {
-      color: var(--muted2); font-size: 1.05rem;
-      max-width: 480px; margin: 0 auto 1.5rem;
-      line-height: 1.6;
-    }
-    .hero-models {
-      display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem;
-    }
-    .model-chip {
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      color: #a5b4fc; font-size: .75rem; font-weight: 500; font-family: var(--mono);
-      padding: 3px 10px; border-radius: 999px;
-    }
-
-    .key-wrap { max-width: 500px; margin: 0 auto; }
-    .key-box {
-      display: flex; align-items: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      overflow: hidden;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .key-box:focus-within {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    .key-prefix {
-      padding: 0 12px; color: var(--muted);
-      font-family: var(--mono); font-size: .77rem;
-      border-right: 1px solid var(--border); white-space: nowrap;
-    }
-    #apiKey {
-      flex: 1; background: transparent; border: none; outline: none;
-      color: var(--text); font-family: var(--mono); font-size: .82rem;
-      padding: 13px 14px;
-    }
-    #apiKey::placeholder { color: var(--muted); }
-    .key-toggle {
-      background: transparent; border: none; color: var(--muted);
-      padding: 0 13px; cursor: pointer; transition: color .2s;
-      display: flex; align-items: center;
-    }
-    .key-toggle:hover { color: var(--text); }
-    .key-toggle svg { width: 16px; height: 16px; display: block; }
-    .key-status {
-      display: flex; align-items: center; gap: 6px;
-      font-size: .78rem; color: var(--muted2);
-      margin-top: 9px; justify-content: center;
-      transition: color .3s;
-    }
-    .key-status.active { color: var(--success); }
-    .key-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-
-    main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
-    section { margin-bottom: 3rem; }
-    .sec-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1.25rem; }
-    .sec-num {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(99,102,241,0.12);
-      border: 1px solid rgba(99,102,241,0.28);
-      color: #a5b4fc; font-size: .72rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      margin-top: 2px;
-    }
-    .sec-title { font-size: 1.15rem; font-weight: 600; }
-    .sec-desc { color: var(--muted2); font-size: .85rem; margin-top: 3px; line-height: 1.5; }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 1.35rem;
-    }
-
-    label { display: block; font-size: .78rem; font-weight: 500; color: var(--muted2); margin-bottom: 6px; }
-    select, input[type=text], textarea {
-      width: 100%; background: var(--code-bg);
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-      color: var(--text); font-family: var(--sans); font-size: .86rem;
-      padding: 9px 12px; outline: none;
-      transition: border-color .2s, box-shadow .2s; appearance: none;
-    }
-    select:focus, input[type=text]:focus, textarea:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-    select {
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234e5566'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center; background-size: 16px;
-      padding-right: 34px;
-    }
-    select option { background: #13141c; }
-    textarea { resize: vertical; min-height: 72px; font-family: var(--mono); font-size: .82rem; line-height: 1.55; }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    @media(max-width:600px) { .grid-2 { grid-template-columns: 1fr; } }
-    .mb-12 { margin-bottom: 12px; }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 9px 18px; border-radius: var(--r-sm);
-      font-size: .86rem; font-weight: 600; border: none; cursor: pointer;
-      transition: all .2s; text-decoration: none; white-space: nowrap;
-    }
-    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #4f46e5; box-shadow: 0 0 24px var(--accent-glow); }
-    .btn-primary:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
-    .btn-ghost { background: transparent; color: var(--muted2); border: 1px solid var(--border); }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.14); }
-    .btn-sm { padding: 6px 12px; font-size: .78rem; }
-    .send-row { display: flex; align-items: center; gap: 10px; }
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin .55s linear infinite; display: none;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .response-wrap { margin-top: 14px; }
-    .response-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .response-label { font-size: .75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .response-meta { display: flex; align-items: center; gap: 10px; }
-    .status-chip { font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
-    .status-chip.ok { background: rgba(16,185,129,.12); color: #34d399; }
-    .status-chip.err { background: rgba(244,63,94,.12); color: #fb7185; }
-    .status-chip.warn { background: rgba(234,179,8,.12); color: #fbbf24; }
-    .resp-time { font-size: .73rem; color: var(--muted); font-family: var(--mono); }
-    .response-body {
-      background: var(--code-bg); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 14px 16px;
-      font-family: var(--mono); font-size: .82rem; line-height: 1.65;
-      color: var(--muted2); min-height: 90px;
-      white-space: pre-wrap; word-break: break-word;
-    }
-    .response-body.has-content { color: var(--text); }
-    .response-body.is-error { color: #fb7185; }
-    .response-body.placeholder { color: var(--muted); font-style: italic; font-family: var(--sans); font-size: .85rem; }
-
-    .curl-wrap { margin-top: 12px; }
-    .curl-topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      border-bottom: none; border-radius: var(--r-sm) var(--r-sm) 0 0;
-      padding: 8px 14px;
-    }
-    .curl-tag { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .curl-body {
-      background: var(--code-bg); border: 1px solid var(--border);
-      border-radius: 0 0 var(--r-sm) var(--r-sm);
-      padding: 14px 16px; font-family: var(--mono); font-size: .78rem;
-      line-height: 1.7; color: #a5b4fc;
-      white-space: pre-wrap; word-break: break-all; overflow-x: auto;
-    }
-
-    .api-toggle {
-      display: inline-flex;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 3px; gap: 2px;
-      margin-bottom: 12px;
-    }
-    .api-btn {
-      padding: 5px 16px; border-radius: 6px; font-size: .8rem;
-      font-weight: 600; color: var(--muted2); cursor: pointer;
-      border: none; background: transparent; transition: all .15s;
-    }
-    .api-btn.active { background: rgba(255,255,255,0.08); color: var(--text); }
-    .lang-tabs {
-      display: flex; gap: 2px; flex-wrap: wrap;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 4px; margin-bottom: 14px;
-    }
-    .lang-tab {
-      padding: 6px 14px; border-radius: var(--r-sm); font-size: .8rem;
-      font-weight: 500; color: var(--muted2); cursor: pointer;
-      border: none; background: transparent; transition: all .15s;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .lang-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-    .lang-tab.active { background: var(--accent); color: #fff; }
-
-    .code-topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255,255,255,0.025); border: 1px solid var(--border);
-      border-bottom: none; border-radius: var(--r) var(--r) 0 0;
-      padding: 9px 16px;
-    }
-    .code-lang { font-size: .72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .code-block {
-      background: var(--code-bg); border: 1px solid var(--border);
-      border-radius: 0 0 var(--r) var(--r);
-      padding: 18px 20px; font-family: var(--mono); font-size: .8rem;
-      line-height: 1.75; overflow-x: auto; white-space: pre; color: #c9d1d9;
-      max-height: 400px; overflow-y: auto;
-    }
-    .code-meta { display: flex; align-items: center; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
-    .meta-pill {
-      font-size: .76rem; color: var(--muted2);
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      padding: 3px 10px; border-radius: 999px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .meta-pill svg { width: 11px; height: 11px; }
-
-    .error-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-    .error-item {
-      background: var(--code-bg); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 12px 14px; font-size: .85rem; line-height: 1.5;
-    }
-    .error-code { font-family: var(--mono); color: #fb7185; font-weight: 600; font-size: .8rem; }
-    .error-fix { color: var(--muted2); font-size: .82rem; margin-top: 2px; }
-
-    .fb-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 12px; }
-    @media(max-width:560px) { .fb-grid { grid-template-columns: 1fr; } }
-    .fb-note { font-size: .8rem; color: var(--muted); margin-top: 10px; }
-    .fb-note a { color: var(--cyan); text-decoration: none; }
-    .fb-note a:hover { text-decoration: underline; }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem; text-align: center;
-      color: var(--muted); font-size: .83rem;
-    }
-    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 14px; flex-wrap: wrap; }
-    .footer-link {
-      color: var(--muted2); text-decoration: none;
-      display: flex; align-items: center; gap: 5px;
-      font-size: .83rem; transition: color .2s;
-    }
-    .footer-link:hover { color: var(--text); }
-    .footer-link svg { width: 14px; height: 14px; }
-    .footer-built { color: var(--muted2); margin-top: 6px; }
-    .footer-built a { color: #a5b4fc; text-decoration: none; }
-    .footer-built a:hover { text-decoration: underline; }
-    .footer-disclaimer { font-size: .75rem; color: var(--muted); margin-top: 10px; }
-
-    #toast {
-      position: fixed; bottom: 24px; right: 24px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: 11px 18px;
-      font-size: .85rem; color: var(--text);
-      display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-      transform: translateY(80px); opacity: 0;
-      transition: all .28s cubic-bezier(.34,1.56,.64,1);
-      z-index: 999; pointer-events: none;
-    }
-    #toast.show { transform: translateY(0); opacity: 1; }
-    hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    body { background: #0a0a0b; color: #e4e4e7; }
+    .card { background: #18181b; border: 1px solid #27272a; }
+    .input { background: #09090b; border: 1px solid #3f3f46; }
+    .btn { transition: all 0.15s; }
+    .btn:hover { transform: translateY(-1px); }
+    pre { white-space: pre-wrap; word-break: break-word; }
   </style>
 </head>
-<body>
+<body class="min-h-screen font-sans antialiased">
 
-<nav>
-  <a class="logo" href="#">
-    <span class="logo-pulse"></span>
-    AgentRouter Guide
-  </a>
-  <div class="nav-links">
-    <a class="nav-link" href="#headers">WAF Bypass</a>
-    <a class="nav-link" href="#playground">Playground</a>
-    <a class="nav-link" href="#snippets">Snippets</a>
-    <a class="nav-link" href="#errors">Common Errors</a>
-    <a class="nav-link" href="https://github.com/samkiell/AgentRouter" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-      GitHub
-    </a>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="hero-badge">
-    <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
-    OpenAI-Compatible API &amp; WAF Bypass
-  </div>
-  <h1>AgentRouter Direct API</h1>
-  <p>Use AgentRouter as a standard API endpoint. Drop your API key below to test endpoints and pre-fill code snippets.</p>
-
-  <div class="hero-models">
-    <span class="model-chip">gpt-5.6-sol</span>
-    <span class="model-chip">claude-opus-4-8</span>
-    <span class="model-chip">claude-opus-5</span>
-  </div>
-
-  <div class="key-wrap">
-    <div class="key-box">
-      <span class="key-prefix">sk-…</span>
-      <input id="apiKey" type="password" placeholder="Paste your AgentRouter API key" autocomplete="off" spellcheck="false" />
-      <button class="key-toggle" id="keyToggle" title="Show / hide key">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
-    </div>
-    <div class="key-status" id="keyStatus">
-      <span class="key-status-dot"></span>
-      No key set — snippets will show a placeholder
-    </div>
-  </div>
-</div>
-
-<main>
-
-  <!-- 1. Get Key -->
-  <section id="key">
-    <div class="sec-head">
-      <span class="sec-num">1</span>
-      <div>
-        <div class="sec-title">Get an API Key</div>
-        <div class="sec-desc">Sign up on AgentRouter to retrieve your API key.</div>
+  <!-- Hero -->
+  <header class="border-b border-zinc-800">
+    <div class="max-w-3xl mx-auto px-6 py-12 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">AgentRouter Direct API</h1>
+      <p class="mt-3 text-zinc-400">Use it as a normal OpenAI-compatible endpoint.<br>Unofficial WAF bypass guide.</p>
+      <div class="mt-6 flex flex-wrap justify-center gap-2 text-sm">
+        <span class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300">gpt-5.6-sol</span>
+        <span class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300">claude-opus-4-8</span>
+        <span class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300">claude-opus-5</span>
       </div>
     </div>
-    <div class="card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-      <div>
-        <div style="font-weight:600; font-size:.95rem;">Official Registration</div>
-        <div style="color:var(--muted2); font-size:.83rem; margin-top:2px;">Create an account to get free access tokens.</div>
-      </div>
-      <a href="https://agentrouter.org/register?aff=uhNr" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+  </header>
+
+  <main class="max-w-3xl mx-auto px-6 py-10 space-y-10">
+
+    <!-- Step 1 -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-3">1. Get your key</h2>
+      <p class="text-zinc-400 text-sm mb-4">Sign up and create an API key.</p>
+      <a href="https://agentrouter.org/register?aff=uhNr" target="_blank"
+         class="btn inline-block px-4 py-2 rounded-lg bg-white text-black text-sm font-medium">
         Get free key →
       </a>
-    </div>
-  </section>
+    </section>
 
-  <hr />
-
-  <!-- 2. WAF Bypass -->
-  <section id="headers">
-    <div class="sec-head">
-      <span class="sec-num">2</span>
-      <div>
-        <div class="sec-title">Required Headers (WAF Bypass)</div>
-        <div class="sec-desc">Send these headers on every request or you will receive an <code style="color:#fb7185">unauthorized client</code> error.</div>
-      </div>
-    </div>
-    <div class="card">
-      <div style="margin-bottom:8px; font-size:.78rem; color:var(--muted2);">Base URL: <code style="color:#a5b4fc; font-family:var(--mono)">https://agentrouter.org/v1</code></div>
-      <pre class="code-block" style="border-radius:var(--r-sm); font-size:.82rem;">Originator: codex_cli_rs
+    <!-- Step 2 -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-3">2. Required headers (WAF bypass)</h2>
+      <p class="text-zinc-400 text-sm mb-4">Send these on every request or you get <code class="text-red-400">unauthorized client</code>.</p>
+      <pre class="input rounded-lg p-4 text-sm text-emerald-400 overflow-x-auto">Originator: codex_cli_rs
 Version: 0.101.0
 User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
-    </div>
-  </section>
+      <p class="mt-3 text-xs text-zinc-500">Base URL: <code class="text-zinc-300">https://agentrouter.org/v1</code></p>
+    </section>
 
-  <hr />
-
-  <!-- 3. Live Playground -->
-  <section id="playground">
-    <div class="sec-head">
-      <span class="sec-num">3</span>
-      <div>
-        <div class="sec-title">Live Playground</div>
-        <div class="sec-desc">Configure your request. A ready-to-run cURL command is always generated below.</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="grid-2">
+    <!-- Live Tester -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-4">3. Live tester</h2>
+      
+      <div class="space-y-4">
         <div>
-          <label for="pgModel">Model</label>
-          <select id="pgModel">
-            <option value="gpt-5.6-sol" data-api="openai">gpt-5.6-sol (GPT)</option>
-            <option value="claude-opus-4-8" data-api="claude">claude-opus-4-8 (Claude)</option>
-            <option value="claude-opus-5" data-api="claude">claude-opus-5 (Claude)</option>
-          </select>
+          <label class="block text-xs text-zinc-500 mb-1">API Key</label>
+          <input id="apiKey" type="password" placeholder="sk-..." 
+                 class="input w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-zinc-500" />
         </div>
-        <div>
-          <label for="pgEndpoint">Endpoint</label>
-          <select id="pgEndpoint">
-            <option value="openai">/v1/chat/completions (OpenAI format)</option>
-            <option value="claude">/v1/messages (Claude native)</option>
-          </select>
-        </div>
-      </div>
-      <div class="mb-12">
-        <label for="pgMsg">Message</label>
-        <textarea id="pgMsg" rows="2">Hi, who are you?</textarea>
-      </div>
-      <div class="send-row">
-        <button class="btn btn-primary" id="sendBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          <span id="sendLabel">Send Request</span>
-        </button>
-        <div class="spinner" id="spinner"></div>
-      </div>
 
-      <div class="response-wrap">
-        <div class="response-topbar">
-          <span class="response-label">Response</span>
-          <div class="response-meta">
-            <span id="statusChip"></span>
-            <span class="resp-time" id="respTime"></span>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-zinc-500 mb-1">Model</label>
+            <select id="model" class="input w-full rounded-lg px-3 py-2 text-sm outline-none">
+              <option value="gpt-5.6-sol">gpt-5.6-sol</option>
+              <option value="claude-opus-4-8">claude-opus-4-8</option>
+              <option value="claude-opus-5">claude-opus-5</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-zinc-500 mb-1">Mode</label>
+            <select id="mode" class="input w-full rounded-lg px-3 py-2 text-sm outline-none">
+              <option value="openai">OpenAI (/chat/completions)</option>
+              <option value="claude">Claude (/messages)</option>
+            </select>
           </div>
         </div>
-        <div class="response-body placeholder" id="responseBody">Hit "Send Request" to see the response here.</div>
-      </div>
 
-      <div class="curl-wrap">
-        <div class="curl-topbar">
-          <span class="curl-tag">Generated cURL</span>
-          <button class="btn btn-ghost btn-sm" onclick="copyCurl()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            Copy
-          </button>
+        <div>
+          <label class="block text-xs text-zinc-500 mb-1">Message</label>
+          <textarea id="prompt" rows="2" class="input w-full rounded-lg px-3 py-2 text-sm outline-none resize-none"
+                    placeholder="Hi">Hi</textarea>
         </div>
-        <div class="curl-body" id="curlOutput">Loading…</div>
-      </div>
-    </div>
-  </section>
 
-  <hr />
-
-  <!-- 4. Code Snippets -->
-  <section id="snippets">
-    <div class="sec-head">
-      <span class="sec-num">4</span>
-      <div>
-        <div class="sec-title">Code Snippets</div>
-        <div class="sec-desc">Select a language. Your API key is pre-filled automatically when entered above.</div>
-      </div>
-    </div>
-
-    <div class="api-toggle">
-      <button class="api-btn active" id="snipOpenAI" onclick="setSnipApi('openai')">OpenAI format</button>
-      <button class="api-btn" id="snipClaude" onclick="setSnipApi('claude')">Claude native</button>
-    </div>
-
-    <div class="lang-tabs" id="langTabs">
-      <button class="lang-tab active" data-lang="curl">cURL</button>
-      <button class="lang-tab" data-lang="node">Node.js</button>
-      <button class="lang-tab" data-lang="typescript">TypeScript</button>
-      <button class="lang-tab" data-lang="python">Python</button>
-      <button class="lang-tab" data-lang="go">Go</button>
-      <button class="lang-tab" data-lang="php">PHP</button>
-      <button class="lang-tab" data-lang="csharp">C#</button>
-    </div>
-
-    <div>
-      <div class="code-topbar">
-        <span class="code-lang" id="codeLangLabel">bash</span>
-        <button class="btn btn-ghost btn-sm" onclick="copySnippet()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copy
+        <button id="sendBtn" onclick="runTest()"
+                class="btn w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-sm font-medium">
+          Send request
         </button>
-      </div>
-      <pre class="code-block" id="codeBlock"></pre>
-      <div class="code-meta" id="codeMeta"></div>
-    </div>
-  </section>
 
-  <hr />
-
-  <!-- 5. Common Errors -->
-  <section id="errors">
-    <div class="sec-head">
-      <span class="sec-num">5</span>
-      <div>
-        <div class="sec-title">Common Errors</div>
-        <div class="sec-desc">Quick reference for troubleshooting API response errors.</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="error-list">
-        <div class="error-item">
-          <div class="error-code">unauthorized client</div>
-          <div class="error-fix">Missing required WAF headers (<code style="color:#a5b4fc">Originator</code>, <code style="color:#a5b4fc">Version</code>, <code style="color:#a5b4fc">User-Agent</code>). Include them in all requests.</div>
-        </div>
-        <div class="error-item">
-          <div class="error-code">content-blocked</div>
-          <div class="error-fix">Prompt filter triggered or prohibited phrase detected. Simplify prompt or switch to another model.</div>
-        </div>
-        <div class="error-item">
-          <div class="error-code">no available channel</div>
-          <div class="error-fix">Selected model is temporarily out of capacity on the server. Try again in a few seconds or switch models.</div>
+        <div id="result" class="hidden">
+          <label class="block text-xs text-zinc-500 mb-1">Response</label>
+          <pre id="output" class="input rounded-lg p-4 text-sm max-h-64 overflow-y-auto"></pre>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <hr />
+    <!-- Errors -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-3">Common errors</h2>
+      <ul class="space-y-3 text-sm text-zinc-400">
+        <li><span class="text-red-400 font-medium">unauthorized client</span> → missing the 3 headers</li>
+        <li><span class="text-red-400 font-medium">content-blocked</span> → simplify prompt or switch model</li>
+        <li><span class="text-red-400 font-medium">no available channel</span> → model temporarily out of capacity</li>
+      </ul>
+    </section>
 
-  <!-- 6. Feedback -->
-  <section id="feedback">
-    <div class="sec-head">
-      <span class="sec-num">6</span>
-      <div>
-        <div class="sec-title">Feedback &amp; Bug Reports</div>
-        <div class="sec-desc">Doesn't work or something unclear? Report directly to GitHub.</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="fb-grid">
-        <div>
-          <label for="fbType">Type</label>
-          <select id="fbType">
-            <option>🐛 Bug Report</option>
-            <option>❓ Confusion / Unclear Docs</option>
-            <option>💡 Suggestion</option>
-            <option>💬 Other</option>
-          </select>
-        </div>
-        <div>
-          <label for="fbMsg">Message</label>
-          <textarea id="fbMsg" rows="3" placeholder="Describe the issue or suggestion…"></textarea>
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="submitFeedback()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        Open GitHub Issue
-      </button>
-      <p class="fb-note">
-        This opens a pre-filled GitHub issue in
-        <a href="https://github.com/samkiell/AgentRouter/issues" target="_blank">samkiell/AgentRouter</a>.
-      </p>
-    </div>
-  </section>
+    <!-- Code snippet -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-3">Quick Node example</h2>
+      <pre class="input rounded-lg p-4 text-sm text-zinc-300 overflow-x-auto">npm install openai
 
-</main>
-
-<footer>
-  <div class="footer-links">
-    <a class="footer-link" href="https://github.com/samkiell/AgentRouter" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-      Repository
-    </a>
-    <a class="footer-link" href="https://agentrouter.org/register?aff=uhNr" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      Get Free API Key
-    </a>
-    <a class="footer-link" href="https://github.com/samkiell/AgentRouter/issues" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Issues
-    </a>
-  </div>
-  <p class="footer-built">Made with garri💔 by <a href="https://samkiel.dev" target="_blank">SAMKIEL</a></p>
-  <p class="footer-disclaimer">Unofficial workaround. Use at your own risk.</p>
-</footer>
-
-<div id="toast"></div>
-
-<script>
-  let apiKey = '';
-  let snipApi = 'openai';
-  let currentLang = 'curl';
-
-  const WAF = {
-    Originator: 'codex_cli_rs',
-    Version: '0.101.0',
-  };
-
-  document.getElementById('apiKey').addEventListener('input', e => {
-    apiKey = e.target.value.trim();
-    const status = document.getElementById('keyStatus');
-    if (apiKey) {
-      status.innerHTML = '<span class="key-status-dot"></span> Key set — snippets updated';
-      status.classList.add('active');
-    } else {
-      status.innerHTML = '<span class="key-status-dot"></span> No key set — snippets will show a placeholder';
-      status.classList.remove('active');
-    }
-    renderCurl();
-    renderSnippet();
-  });
-
-  document.getElementById('keyToggle').addEventListener('click', () => {
-    const inp = document.getElementById('apiKey');
-    inp.type = inp.type === 'password' ? 'text' : 'password';
-  });
-
-  const pgModel = document.getElementById('pgModel');
-  const pgEndpoint = document.getElementById('pgEndpoint');
-  const pgMsg = document.getElementById('pgMsg');
-
-  pgModel.addEventListener('change', () => {
-    const opt = pgModel.selectedOptions[0];
-    pgEndpoint.value = opt.dataset.api || 'openai';
-    renderCurl();
-  });
-  pgEndpoint.addEventListener('change', renderCurl);
-  pgMsg.addEventListener('input', renderCurl);
-
-  function renderCurl() {
-    const key = apiKey || 'YOUR_API_KEY';
-    const model = pgModel.value;
-    const msg = (pgMsg.value || '').replace(/'/g, "\'");
-    const endpoint = pgEndpoint.value;
-
-    let cmd;
-    if (endpoint === 'claude') {
-      cmd = `curl -s -X POST https://agentrouter.org/v1/messages \
-  -H "Authorization: Bearer ${key}" \
-  -H "x-api-key: ${key}" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
-  -d '{"model":"${model}","max_tokens":256,"messages":[{"role":"user","content":"${msg}"}]}'`;
-    } else {
-      cmd = `curl -s -X POST https://agentrouter.org/v1/chat/completions \
-  -H "Authorization: Bearer ${key}" \
-  -H "Content-Type: application/json" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
-  -d '{"model":"${model}","max_tokens":256,"messages":[{"role":"user","content":"${msg}"}]}'`;
-    }
-    document.getElementById('curlOutput').textContent = cmd;
+const OpenAI = require("openai");
+const client = new OpenAI({
+  apiKey: process.env.AGENTROUTER_API_KEY,
+  baseURL: "https://agentrouter.org/v1",
+  defaultHeaders: {
+    Originator: "codex_cli_rs",
+    Version: "0.101.0",
+    "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464"
   }
+});</pre>
+    </section>
 
-  async function sendRequest() {
-    if (!apiKey) { showToast('⚠️ Enter your API key first'); return; }
-    const model = pgModel.value;
-    const msg = pgMsg.value || 'Hi, who are you?';
-    const endpoint = pgEndpoint.value;
-    const btn = document.getElementById('sendBtn');
-    const label = document.getElementById('sendLabel');
-    const spinner = document.getElementById('spinner');
-    const body = document.getElementById('responseBody');
-    const chip = document.getElementById('statusChip');
-    const time = document.getElementById('respTime');
+    <!-- Feedback -->
+    <section class="card rounded-xl p-6">
+      <h2 class="text-lg font-semibold mb-3">Bug or question?</h2>
+      <p class="text-zinc-400 text-sm mb-4">Open an issue on the repo or drop a message.</p>
+      <a href="https://github.com/samkiell/AgentRouter/issues" target="_blank"
+         class="btn inline-block px-4 py-2 rounded-lg border border-zinc-600 text-sm hover:bg-zinc-800">
+        Report on GitHub →
+      </a>
+    </section>
+  </main>
 
-    btn.disabled = true; label.textContent = 'Sending…';
-    spinner.style.display = 'block';
-    body.className = 'response-body placeholder';
-    body.textContent = 'Waiting for response…';
-    chip.className = ''; chip.textContent = ''; time.textContent = '';
+  <footer class="border-t border-zinc-800 py-8 text-center text-sm text-zinc-500">
+    <p>Made with garri💔 by <a href="https://samkiel.dev" class="text-zinc-300 hover:underline">SAMKIEL</a></p>
+    <p class="mt-2">
+      <a href="https://github.com/samkiell/AgentRouter" class="hover:text-zinc-300">GitHub Repo</a>
+    </p>
+    <p class="mt-4 text-xs text-zinc-600">Unofficial workaround. Use at your own risk.</p>
+  </footer>
 
-    const t0 = Date.now();
-    try {
-      let url, payload, headers;
-      if (endpoint === 'claude') {
+  <script>
+    async function runTest() {
+      const key = document.getElementById('apiKey').value.trim();
+      const model = document.getElementById('model').value;
+      const mode = document.getElementById('mode').value;
+      const prompt = document.getElementById('prompt').value.trim() || 'Hi';
+      const btn = document.getElementById('sendBtn');
+      const result = document.getElementById('result');
+      const output = document.getElementById('output');
+
+      if (!key) {
+        alert('Paste your API key first');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      result.classList.remove('hidden');
+      output.textContent = 'Loading...';
+
+      const headers = {
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'Originator': 'codex_cli_rs',
+        'Version': '0.101.0',
+        'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
+      };
+
+      let url, body;
+
+      if (mode === 'claude') {
         url = 'https://agentrouter.org/v1/messages';
-        payload = { model, max_tokens: 256, messages: [{ role: 'user', content: msg }] };
-        headers = {
-          'Authorization': `Bearer ${apiKey}`,
-          'x-api-key': apiKey,
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01',
-          'Originator': WAF.Originator,
-          'Version': WAF.Version,
+        headers['x-api-key'] = key;
+        headers['anthropic-version'] = '2023-06-01';
+        body = {
+          model,
+          max_tokens: 256,
+          messages: [{ role: 'user', content: prompt }]
         };
       } else {
         url = 'https://agentrouter.org/v1/chat/completions';
-        payload = { model, max_tokens: 256, messages: [{ role: 'user', content: msg }] };
-        headers = {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'Originator': WAF.Originator,
-          'Version': WAF.Version,
+        body = {
+          model,
+          max_tokens: 256,
+          messages: [{ role: 'user', content: prompt }]
         };
       }
 
-      const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(payload) });
-      const ms = Date.now() - t0;
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${data.error?.message || JSON.stringify(data)}`);
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = 'Error: ' + err.message;
       }
 
-      const text = endpoint === 'claude'
-        ? data?.content?.[0]?.text
-        : data?.choices?.[0]?.message?.content;
-
-      body.className = 'response-body has-content';
-      body.textContent = text ?? JSON.stringify(data, null, 2);
-      chip.className = 'status-chip ok'; chip.textContent = `${res.status} OK`;
-      time.textContent = `${ms}ms`;
-    } catch (err) {
-      const ms = Date.now() - t0;
-      body.className = 'response-body is-error';
-      if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError') || err.message.includes('CORS')) {
-        body.textContent = 'Browser fetch blocked (CORS).
-
-The WAF headers required by AgentRouter cannot be fully sent from a browser.
-Use the generated cURL command below — it works perfectly from your terminal.';
-        chip.className = 'status-chip warn'; chip.textContent = 'CORS';
-      } else {
-        body.textContent = err.message;
-        chip.className = 'status-chip err'; chip.textContent = 'Error';
-      }
-      time.textContent = `${ms}ms`;
-    } finally {
-      btn.disabled = false; label.textContent = 'Send Request';
-      spinner.style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Send request';
     }
-  }
-
-  document.getElementById('sendBtn').addEventListener('click', sendRequest);
-
-  function copyCurl() {
-    const text = document.getElementById('curlOutput').textContent;
-    navigator.clipboard.writeText(text).then(() => showToast('✓ cURL command copied'));
-  }
-
-  const LANG_LABELS = { curl: 'bash', node: 'javascript', typescript: 'typescript', python: 'python', go: 'go', php: 'php', csharp: 'csharp' };
-
-  const SNIPPETS = {
-    curl: {
-      openai: k => `#!/usr/bin/env bash
-# Run: bash chat.sh
-
-export AGENTROUTER_API_KEY="${k || 'your_api_key_here'}"
-
-curl -s -X POST https://agentrouter.org/v1/chat/completions \
-  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
-  -d '{
-    "model": "gpt-5.6-sol",
-    "messages": [{"role": "user", "content": "Hi, who are you?"}],
-    "max_tokens": 256
-  }'`,
-      claude: k => `#!/usr/bin/env bash
-# Run: bash claude.sh
-
-export AGENTROUTER_API_KEY="${k || 'your_api_key_here'}"
-
-curl -s -X POST https://agentrouter.org/v1/messages \
-  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
-  -H "x-api-key: $AGENTROUTER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
-  -d '{
-    "model": "claude-opus-5",
-    "max_tokens": 256,
-    "messages": [{"role": "user", "content": "Hi, who are you?"}]
-  }'`,
-    },
-    node: {
-      openai: k => `// Install: npm install openai
-// Run:     node openai.js
-
-const OpenAI = require("openai");
-
-const client = new OpenAI({
-  apiKey: "${k || 'process.env.AGENTROUTER_API_KEY'}",
-  baseURL: "https://agentrouter.org/v1",
-  defaultHeaders: {
-    Originator: "codex_cli_rs",
-    Version: "0.101.0",
-    "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-  },
-});
-
-async function main() {
-  const completion = await client.chat.completions.create({
-    model: "gpt-5.6-sol",
-    messages: [{ role: "user", content: "Hi, who are you?" }],
-    max_tokens: 256,
-  });
-  console.log(completion?.choices?.[0]?.message?.content);
-}
-
-main().catch(console.error);`,
-      claude: k => `// Install: (none — uses built-in https)
-// Run:     node claude.js
-
-const https = require("https");
-
-const apiKey = "${k || 'process.env.AGENTROUTER_API_KEY'}";
-const body = JSON.stringify({
-  model: "claude-opus-4-8", // or "claude-opus-5"
-  max_tokens: 256,
-  messages: [{ role: "user", content: "Hi, who are you?" }],
-});
-
-const req = https.request({
-  hostname: "agentrouter.org",
-  path: "/v1/messages",
-  method: "POST",
-  headers: {
-    "Authorization": \`Bearer \${apiKey}\`,
-    "x-api-key": apiKey,
-    "Content-Type": "application/json",
-    "anthropic-version": "2023-06-01",
-    "Originator": "codex_cli_rs",
-    "Version": "0.101.0",
-    "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-    "Content-Length": Buffer.byteLength(body),
-  },
-}, (res) => {
-  let data = "";
-  res.on("data", c => data += c);
-  res.on("end", () => {
-    const json = JSON.parse(data);
-    console.log(json?.content?.[0]?.text ?? data);
-  });
-});
-
-req.on("error", console.error);
-req.write(body);
-req.end();`,
-    },
-    typescript: {
-      openai: k => `// Install: npm install openai tsx
-// Run:     npx tsx openai.ts
-
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: "${k || 'process.env.AGENTROUTER_API_KEY'}",
-  baseURL: "https://agentrouter.org/v1",
-  defaultHeaders: {
-    Originator: "codex_cli_rs",
-    Version: "0.101.0",
-    "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-  },
-});
-
-async function main() {
-  const completion = await client.chat.completions.create({
-    model: "gpt-5.6-sol",
-    messages: [{ role: "user", content: "Hi, who are you?" }],
-    max_tokens: 256,
-  });
-  console.log(completion?.choices?.[0]?.message?.content);
-}
-
-main().catch(console.error);`,
-      claude: k => `// Install: npm install tsx
-// Run:     npx tsx claude.ts
-
-import * as https from "https";
-
-const apiKey = "${k || 'process.env.AGENTROUTER_API_KEY'}";
-const body = JSON.stringify({
-  model: "claude-opus-5", // or "claude-opus-4-8"
-  max_tokens: 256,
-  messages: [{ role: "user", content: "Hi, who are you?" }],
-});
-
-const req = https.request({
-  hostname: "agentrouter.org",
-  path: "/v1/messages",
-  method: "POST",
-  headers: {
-    "Authorization": \`Bearer \${apiKey}\`,
-    "x-api-key": apiKey,
-    "Content-Type": "application/json",
-    "anthropic-version": "2023-06-01",
-    "Originator": "codex_cli_rs",
-    "Version": "0.101.0",
-    "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-    "Content-Length": Buffer.byteLength(body),
-  },
-}, (res) => {
-  let data = "";
-  res.on("data", (c: string) => (data += c));
-  res.on("end", () => {
-    const json = JSON.parse(data);
-    console.log(json?.content?.[0]?.text ?? data);
-  });
-});
-
-req.on("error", console.error);
-req.write(body);
-req.end();`,
-    },
-    python: {
-      openai: k => `# Install: pip install openai
-# Run:     python openai.py
-
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key="${k || 'os.getenv("AGENTROUTER_API_KEY")'}",
-    base_url="https://agentrouter.org/v1",
-    default_headers={
-        "Originator": "codex_cli_rs",
-        "Version": "0.101.0",
-        "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-    },
-)
-
-completion = client.chat.completions.create(
-    model="gpt-5.6-sol",
-    messages=[{"role": "user", "content": "Hi, who are you?"}],
-    max_tokens=256,
-)
-
-print(completion.choices[0].message.content)`,
-      claude: k => `# Install: pip install requests
-# Run:     python claude.py
-
-import os
-import requests
-
-api_key = "${k || 'os.getenv("AGENTROUTER_API_KEY")'}"
-
-response = requests.post(
-    "https://agentrouter.org/v1/messages",
-    headers={
-        "Authorization": f"Bearer {api_key}",
-        "x-api-key": api_key,
-        "Content-Type": "application/json",
-        "anthropic-version": "2023-06-01",
-        "Originator": "codex_cli_rs",
-        "Version": "0.101.0",
-        "User-Agent": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464",
-    },
-    json={
-        "model": "claude-opus-4-8",  # or "claude-opus-5"
-        "max_tokens": 256,
-        "messages": [{"role": "user", "content": "Hi, who are you?"}],
-    },
-)
-
-data = response.json()
-print(data.get("content", [{}])[0].get("text", response.text))`,
-    },
-    go: {
-      openai: k => `// Install: go mod init app && go mod tidy
-// Run:     go run main.go
-
-package main
-
-import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-)
-
-func main() {
-	apiKey := "${k || 'os.Getenv("AGENTROUTER_API_KEY")'}"
-
-	body, _ := json.Marshal(map[string]any{
-		"model":      "gpt-5.6-sol",
-		"max_tokens": 256,
-		"messages":   []map[string]string{{"role": "user", "content": "Hi, who are you?"}},
-	})
-
-	req, _ := http.NewRequest("POST", "https://agentrouter.org/v1/chat/completions", bytes.NewBuffer(body))
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Originator", "codex_cli_rs")
-	req.Header.Set("Version", "0.101.0")
-	req.Header.Set("User-Agent", "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464")
-
-	resp, _ := (&http.Client{}).Do(req)
-	defer resp.Body.Close()
-	b, _ := io.ReadAll(resp.Body)
-
-	var out map[string]any
-	json.Unmarshal(b, &out)
-	choices := out["choices"].([]any)
-	fmt.Println(choices[0].(map[string]any)["message"].(map[string]any)["content"])
-}`,
-      claude: k => `// Install: go mod init app && go mod tidy
-// Run:     go run claude.go
-
-package main
-
-import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-)
-
-func main() {
-	apiKey := "${k || 'os.Getenv("AGENTROUTER_API_KEY")'}"
-
-	body, _ := json.Marshal(map[string]any{
-		"model":      "claude-opus-5", // or "claude-opus-4-8"
-		"max_tokens": 256,
-		"messages":   []map[string]string{{"role": "user", "content": "Hi, who are you?"}},
-	})
-
-	req, _ := http.NewRequest("POST", "https://agentrouter.org/v1/messages", bytes.NewBuffer(body))
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-	req.Header.Set("x-api-key", apiKey)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("anthropic-version", "2023-06-01")
-	req.Header.Set("Originator", "codex_cli_rs")
-	req.Header.Set("Version", "0.101.0")
-	req.Header.Set("User-Agent", "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464")
-
-	resp, _ := (&http.Client{}).Do(req)
-	defer resp.Body.Close()
-	b, _ := io.ReadAll(resp.Body)
-
-	var out map[string]any
-	json.Unmarshal(b, &out)
-	content := out["content"].([]any)
-	fmt.Println(content[0].(map[string]any)["text"])
-}`,
-    },
-    php: {
-      openai: k => `<?php
-// Run: php openai.php
-
-$apiKey = "${k || 'getenv("AGENTROUTER_API_KEY")'}";
-
-$ch = curl_init('https://agentrouter.org/v1/chat/completions');
-curl_setopt_array($ch, [
-    CURLOPT_POST => true,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => [
-        "Authorization: Bearer $apiKey",
-        'Content-Type: application/json',
-        'Originator: codex_cli_rs',
-        'Version: 0.101.0',
-        'User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464',
-    ],
-    CURLOPT_POSTFIELDS => json_encode([
-        'model' => 'gpt-5.6-sol',
-        'max_tokens' => 256,
-        'messages' => [['role' => 'user', 'content' => 'Hi, who are you?']],
-    ]),
-]);
-
-$result = json_decode(curl_exec($ch), true);
-curl_close($ch);
-echo $result['choices'][0]['message']['content'] . "\n";`,
-      claude: k => `<?php
-// Run: php claude.php
-
-$apiKey = "${k || 'getenv("AGENTROUTER_API_KEY")'}";
-
-$ch = curl_init('https://agentrouter.org/v1/messages');
-curl_setopt_array($ch, [
-    CURLOPT_POST => true,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => [
-        "Authorization: Bearer $apiKey",
-        "x-api-key: $apiKey",
-        'Content-Type: application/json',
-        'anthropic-version: 2023-06-01',
-        'Originator: codex_cli_rs',
-        'Version: 0.101.0',
-        'User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464',
-    ],
-    CURLOPT_POSTFIELDS => json_encode([
-        'model' => 'claude-opus-4-8', // or 'claude-opus-5'
-        'max_tokens' => 256,
-        'messages' => [['role' => 'user', 'content' => 'Hi, who are you?']],
-    ]),
-]);
-
-$result = json_decode(curl_exec($ch), true);
-curl_close($ch);
-echo $result['content'][0]['text'] . "\n";`,
-    },
-    csharp: {
-      openai: k => `// Run: dotnet run
-
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-class Program {
-    static async Task Main() {
-        string apiKey = "${k || 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")'}";
-        using var client = new HttpClient();
-
-        var req = new HttpRequestMessage(HttpMethod.Post, "https://agentrouter.org/v1/chat/completions") {
-            Content = new StringContent(JsonSerializer.Serialize(new {
-                model = "gpt-5.6-sol",
-                max_tokens = 256,
-                messages = new[] { new { role = "user", content = "Hi, who are you?" } }
-            }), Encoding.UTF8, "application/json")
-        };
-        req.Headers.Add("Authorization", $"Bearer {apiKey}");
-        req.Headers.Add("Originator", "codex_cli_rs");
-        req.Headers.Add("Version", "0.101.0");
-        req.Headers.UserAgent.ParseAdd("codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464");
-
-        var res = await client.SendAsync(req);
-        var body = await res.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(body);
-        Console.WriteLine(doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString());
-    }
-}`,
-      claude: k => `// Run: dotnet run
-
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-class Claude {
-    static async Task Main() {
-        string apiKey = "${k || 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")'}";
-        using var client = new HttpClient();
-
-        var req = new HttpRequestMessage(HttpMethod.Post, "https://agentrouter.org/v1/messages") {
-            Content = new StringContent(JsonSerializer.Serialize(new {
-                model = "claude-opus-5", // or "claude-opus-4-8"
-                max_tokens = 256,
-                messages = new[] { new { role = "user", content = "Hi, who are you?" } }
-            }), Encoding.UTF8, "application/json")
-        };
-        req.Headers.Add("Authorization", $"Bearer {apiKey}");
-        req.Headers.Add("x-api-key", apiKey);
-        req.Headers.Add("anthropic-version", "2023-06-01");
-        req.Headers.Add("Originator", "codex_cli_rs");
-        req.Headers.Add("Version", "0.101.0");
-        req.Headers.UserAgent.ParseAdd("codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464");
-
-        var res = await client.SendAsync(req);
-        var body = await res.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(body);
-        Console.WriteLine(doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString());
-    }
-}`,
-    },
-  };
-
-  const META = {
-    curl:       { openai: { install: null, run: 'bash chat.sh' }, claude: { install: null, run: 'bash claude.sh' } },
-    node:       { openai: { install: 'npm install openai', run: 'node openai.js' }, claude: { install: null, run: 'node claude.js' } },
-    typescript: { openai: { install: 'npm install openai tsx', run: 'npx tsx openai.ts' }, claude: { install: 'npm install tsx', run: 'npx tsx claude.ts' } },
-    python:     { openai: { install: 'pip install openai', run: 'python openai.py' }, claude: { install: 'pip install requests', run: 'python claude.py' } },
-    go:         { openai: { install: 'go mod init app && go mod tidy', run: 'go run main.go' }, claude: { install: 'go mod init app && go mod tidy', run: 'go run claude.go' } },
-    php:        { openai: { install: null, run: 'php openai.php' }, claude: { install: null, run: 'php claude.php' } },
-    csharp:     { openai: { install: null, run: 'dotnet run --project snippets/csharp' }, claude: { install: null, run: 'dotnet run --project snippets/csharp' } },
-  };
-
-  function setSnipApi(api) {
-    snipApi = api;
-    document.getElementById('snipOpenAI').classList.toggle('active', api === 'openai');
-    document.getElementById('snipClaude').classList.toggle('active', api === 'claude');
-    renderSnippet();
-  }
-
-  document.getElementById('langTabs').addEventListener('click', e => {
-    const tab = e.target.closest('.lang-tab');
-    if (!tab) return;
-    currentLang = tab.dataset.lang;
-    document.querySelectorAll('.lang-tab').forEach(t => t.classList.toggle('active', t === tab));
-    renderSnippet();
-  });
-
-  function renderSnippet() {
-    const fn = SNIPPETS[currentLang]?.[snipApi];
-    if (!fn) return;
-    const code = fn(apiKey);
-    document.getElementById('codeBlock').textContent = code;
-    document.getElementById('codeLangLabel').textContent = LANG_LABELS[currentLang] || currentLang;
-
-    const m = META[currentLang]?.[snipApi];
-    const metaEl = document.getElementById('codeMeta');
-    metaEl.innerHTML = '';
-    if (m?.install) {
-      metaEl.innerHTML += `<span class="meta-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install: <code>${m.install}</code></span>`;
-    }
-    if (m?.run) {
-      metaEl.innerHTML += `<span class="meta-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Run: <code>${m.run}</code></span>`;
-    }
-  }
-
-  function copySnippet() {
-    const text = document.getElementById('codeBlock').textContent;
-    navigator.clipboard.writeText(text).then(() => showToast('✓ Snippet copied'));
-  }
-
-  function submitFeedback() {
-    const type = document.getElementById('fbType').value;
-    const msg = document.getElementById('fbMsg').value.trim();
-    if (!msg) { showToast('⚠️ Write something first'); return; }
-    const title = encodeURIComponent(`[Dashboard] ${type}`);
-    const body = encodeURIComponent(msg);
-    window.open(`https://github.com/samkiell/AgentRouter/issues/new?title=${title}&body=${body}`, '_blank');
-  }
-
-  let toastTimer;
-  function showToast(msg) {
-    const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
-  }
-
-  renderCurl();
-  renderSnippet();
-</script>
+  </script>
 </body>
 </html>
