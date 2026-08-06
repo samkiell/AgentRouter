@@ -13,7 +13,7 @@ curl -s -X POST https://agentrouter.org/v1/chat/completions \
   -H "Version: 0.101.0" \
   -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
   -d '{
-    "model": "gpt-5.6-sol",
+    "model": "claude-opus-5",
     "messages": [
       {
         "role": "user",
