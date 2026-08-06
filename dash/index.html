@@ -1088,6 +1088,7 @@ class Program {
       if (updateUrl) {
         const url = new URL(window.location.href);
         url.searchParams.set('tab', TAB_SLUGS[validOpt] || validOpt);
+        url.hash = '';
         window.history.replaceState(null, '', url.toString());
       }
     }
@@ -1099,16 +1100,20 @@ class Program {
       const parentSection = target.closest('[id^="section-"]');
       if (parentSection) {
         const sectionOpt = parentSection.id.replace('section-', '');
-        switchOption(sectionOpt, updateUrl);
+        switchOption(sectionOpt, false);
       }
 
       highlightSidebar(cardId);
 
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      target.classList.remove('card-highlight');
-      void target.offsetWidth;
-      target.classList.add('card-highlight');
+          target.classList.remove('card-highlight');
+          void target.offsetWidth;
+          target.classList.add('card-highlight');
+        }, 60);
+      });
 
       if (updateUrl) {
         const url = new URL(window.location.href);
@@ -1133,6 +1138,13 @@ class Program {
       const rawTab = params.get('tab') || params.get('option');
       const hash = window.location.hash.replace('#', '');
 
+      let targetOpt = 'opt1';
+
+      if (rawTab) {
+        const normalized = decodeURIComponent(rawTab).toLowerCase().trim().replace(/[\s_]+/g, '-');
+        targetOpt = SLUG_TO_OPT[normalized] || SLUG_TO_OPT[rawTab] || 'opt1';
+      }
+
       if (hash) {
         const hashElem = document.getElementById(hash);
         if (hashElem) {
@@ -1141,14 +1153,7 @@ class Program {
         }
       }
 
-      if (rawTab) {
-        const normalized = rawTab.toLowerCase().trim().replace(/[\s_]+/g, '-');
-        const matchedOpt = SLUG_TO_OPT[normalized] || SLUG_TO_OPT[rawTab] || 'opt1';
-        switchOption(matchedOpt, false);
-        return;
-      }
-
-      switchOption('opt1', false);
+      switchOption(targetOpt, false);
     }
 
     async function runTest() {
@@ -1262,6 +1267,7 @@ ${bodyText || 'No description provided.'}
         el.classList.add('opacity-0', 'translate-y-4');
       }, 2400);
     window.addEventListener('popstate', handleInitialRouting);
+    window.addEventListener('hashchange', handleInitialRouting);
     renderAll();
     handleInitialRouting();
   </script>
