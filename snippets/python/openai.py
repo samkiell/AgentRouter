@@ -1,3 +1,6 @@
+# Install: pip install openai
+# Run:     python openai.py
+
 from openai import OpenAI
 import os
 
