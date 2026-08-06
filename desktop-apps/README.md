@@ -4,6 +4,8 @@
 
 Use AgentRouter inside desktop AI applications (Claude Desktop, Cowork, Cursor, etc.).
 
+👉 **Interactive Setup & Testing Suite**: **[agentrouter.samkiel.online](https://agentrouter.samkiel.online)**
+
 ---
 
 ## 📌 Endpoint Base URL Rules

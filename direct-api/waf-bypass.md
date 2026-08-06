@@ -2,6 +2,10 @@
 
 AgentRouter sits behind an Aliyun / Cloudflare WAF that checks more than just your API key.
 
+👉 **Test WAF Bypass Live**: **[agentrouter.samkiel.online](https://agentrouter.samkiel.online)**
+
+---
+
 It looks at the client fingerprint. Plain `curl`, standard browser fetches, and default Anthropic/OpenAI SDK calls get rejected with:
 
 ```json

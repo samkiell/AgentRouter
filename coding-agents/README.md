@@ -4,6 +4,8 @@
 
 Integrate AgentRouter directly into official AI coding tools, CLI agents, and IDE extensions.
 
+👉 **Interactive Setup & Testing Suite**: **[agentrouter.samkiel.online](https://agentrouter.samkiel.online)**
+
 ---
 
 ## 📌 Golden Rule: Base URL Format

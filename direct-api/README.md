@@ -4,6 +4,8 @@
 
 Directly calling AgentRouter's base URL from custom code or standard HTTP clients via raw HTTP/cURL is **blocked by Cloudflare/Aliyun WAF design**.
 
+👉 **Test Live API & Generate cURL**: **[agentrouter.samkiel.online](https://agentrouter.samkiel.online)**
+
 ---
 
 ## 🔑 1. Get your key
