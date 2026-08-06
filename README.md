@@ -1,6 +1,6 @@
 # AgentRouter Direct API Guide
 
-Use AgentRouter as an OpenAI-compatible API endpoint in your apps, scripts, or services.
+Use AgentRouter as an OpenAI-compatible API endpoint in your own apps, websites, or bots.
 
 ---
 
