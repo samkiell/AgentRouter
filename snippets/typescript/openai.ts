@@ -1,3 +1,6 @@
+// Install: npm install openai tsx
+// Run:     npx tsx openai.ts
+
 import OpenAI from "openai";
 
 const client = new OpenAI({
