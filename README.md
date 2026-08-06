@@ -44,14 +44,14 @@ curl -X POST https://agentrouter.org/v1/chat/completions \
 
 ## Repository Structure
 
-- [`examples/`](examples/)
-  - [cURL / Bash](examples/curl/chat.sh)
-  - [Go](examples/go/main.go)
-  - [Node.js](examples/node/openai.js)
-  - [Python](examples/python/openai.py)
-  - [TypeScript](examples/typescript/openai.ts)
-  - [PHP](examples/php/openai.php)
-  - [C# (.NET)](examples/csharp/Program.cs)
+- [`snippets/`](snippets/)
+  - [cURL / Bash](snippets/curl/chat.sh)
+  - [Go](snippets/go/main.go)
+  - [Node.js](snippets/node/openai.js)
+  - [Python](snippets/python/openai.py)
+  - [TypeScript](snippets/typescript/openai.ts)
+  - [PHP](snippets/php/openai.php)
+  - [C# (.NET)](snippets/csharp/Program.cs)
 - [`postman/`](postman/)
   - [OpenAI Collection](postman/openai-collection.json)
   - [Claude Collection](postman/claude-collection.json)
