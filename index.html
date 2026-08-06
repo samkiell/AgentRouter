@@ -318,6 +318,28 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
           <span class="text-red-400 font-mono font-medium block mb-1">no available channel</span>
           Target model is temporarily over capacity. Wait a few seconds or switch models.
         </div>
+    <!-- Bug or Question -->
+    <section class="card rounded-xl p-6 space-y-3">
+      <h3 class="text-sm font-semibold text-white">Bug or Question?</h3>
+      <p class="text-xs text-zinc-400">Open an issue on GitHub to report unexpected behavior or ask questions.</p>
+      
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <select id="issueType" class="input rounded-lg px-3 py-2 text-xs text-white outline-none">
+            <option value="🐛 Bug Report">🐛 Bug Report</option>
+            <option value="❓ Confusion / Question">❓ Confusion / Question</option>
+            <option value="💡 Feature Suggestion">💡 Feature Suggestion</option>
+          </select>
+          <input id="issueTitle" type="text" placeholder="Summary / issue title..." class="input sm:col-span-2 rounded-lg px-3 py-2 text-xs text-white outline-none" />
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="openGitHubIssue()" class="btn px-4 py-2 rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium inline-flex items-center gap-1.5">
+            Report on GitHub →
+          </button>
+          <a href="https://github.com/samkiell/AgentRouter/issues/new" target="_blank" rel="noopener" class="text-xs text-zinc-400 hover:text-white underline">
+            Direct GitHub Link
+          </a>
+        </div>
       </div>
     </section>
 
@@ -934,6 +956,13 @@ Use the generated cURL command below in your terminal — it bypasses this restr
 
     function downloadJson(path) {
       window.open(`https://raw.githubusercontent.com/samkiell/AgentRouter/main/${path}`, '_blank');
+    }
+
+    function openGitHubIssue() {
+      const type = document.getElementById('issueType')?.value || '🐛 Bug Report';
+      const titleText = document.getElementById('issueTitle')?.value.trim() || '';
+      const title = encodeURIComponent(`[Integration] ${type}${titleText ? ': ' + titleText : ''}`);
+      window.open(`https://github.com/samkiell/AgentRouter/issues/new?title=${title}`, '_blank');
     }
 
     let toastTimer;
