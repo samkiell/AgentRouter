@@ -16,7 +16,7 @@ const client = new OpenAI({
 
 async function main() {
   const completion = await client.chat.completions.create({
-    model: "gpt-5.6-sol",
+    model: "claude-opus-5",
     messages: [{ role: "user", content: "Hi, I'm a vibecoder." }],
     max_tokens: 256,
   });
