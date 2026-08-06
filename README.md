@@ -9,7 +9,7 @@ Use AgentRouter as a normal OpenAI-compatible endpoint in your own apps, website
 
 ## Quick Start
 
-1. Get your API key from [agentrouter.org](https://agentrouter.org)
+1. Get your API key from [agentrouter.org](https://agentrouter.org/register?aff=uhNr)
 2. Always send these 3 extra headers (this is the WAF bypass):
 
 ```
