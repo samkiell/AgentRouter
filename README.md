@@ -1,136 +1,76 @@
-# AgentRouter Direct API Guide
+# AgentRouter Integration
 
-Use AgentRouter as an OpenAI-compatible API endpoint in your own apps, websites, or bots.
+Complete integration guide for AgentRouter — an unofficial OpenAI & Anthropic compatible API gateway.
 
-> 💡 **Interactive Playground & Dashboard**: Open [`index.html`](index.html) in your browser for a live test dashboard, auto-filled code snippets, and bug reporting.
-
----
-
-## Get an API Key
-
-Register at [agentrouter.org](https://agentrouter.org/register?aff=uhNr) and copy your key.
+> 💡 **Interactive Dashboard**: Access the live interactive sandbox and guide at [`index.html`](index.html) (or [`dash/index.html`](dash/index.html) for deployment at `agentrouter.samkiel.dev`).
 
 ---
 
-## Set Your API Key
+## 3 Integration Methods
 
-**Mac / Linux (bash/zsh)**
-```bash
-export AGENTROUTER_API_KEY="your_api_key_here"
-```
+AgentRouter supports 3 distinct integration paths:
 
-**Windows — PowerShell**
-```powershell
-$env:AGENTROUTER_API_KEY = "your_api_key_here"
-```
+### 1. Direct API (Raw HTTP / cURL) — ❌ Blocked by Design
+Using AgentRouter's base URL straight in your own custom app or codebase via raw HTTP / cURL calls is **blocked by Cloudflare WAF design**.
 
-**Windows — CMD**
-```cmd
-set AGENTROUTER_API_KEY=your_api_key_here
-```
-
-> The key is read from the environment variable in every snippet. Don't hardcode it.
-
----
-
-## Why Extra Headers?
-
-AgentRouter's WAF rejects plain requests with `unauthorized client detected`. The three headers below spoof an allowed client fingerprint. **Include them on every request.**
-
-```
-Originator: codex_cli_rs
-Version: 0.101.0
-User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464
-```
-
-See [`waf-bypass.md`](waf-bypass.md) for details.
+- **Why it's blocked**: Cloudflare WAF returns `unauthorized client detected` for standard HTTP clients.
+- **WAF Bypass Headers (Experimental)**: Requires spoofing 3 specific client headers on every request:
+  ```http
+  Originator: codex_cli_rs
+  Version: 0.101.0
+  User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464
+  ```
+- **Base URLs**:
+  - OpenAI Format (`/v1/chat/completions`): `https://agentrouter.org/v1`
+  - Claude Format (`/v1/messages`): `https://agentrouter.org` (NO `/v1`)
+- **Folder**: See [`direct-api/README.md`](direct-api/README.md) for details & raw snippets.
 
 ---
 
-## Models
+### 2. Coding Agents & IDEs — ✅ Confirmed Working
+Integrating AgentRouter directly into official coding tools, CLI agents, and IDE extensions.
 
-| Model | Notes |
-|---|---|
-| `gpt-5.6-sol` | Fast, good for most tasks |
-| `claude-opus-4-8` | Balanced quality / speed |
-| `claude-opus-5` | Highest quality, slower |
-
----
-
-## Quick Start — cURL
-
-```bash
-curl -X POST https://agentrouter.org/v1/chat/completions \
-  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
-  -d '{
-    "model": "gpt-5.6-sol",
-    "messages": [{"role": "user", "content": "Hello!"}]
-  }'
-```
+- **Supported Tools**:
+  - **Claude Code CLI** (`npm install -g @anthropic-ai/claude-code`)
+  - **Claude Code VS Code Extension** (Configured via `claudeCode.environmentVariables` in settings.json)
+  - **Cline Extension** (Anthropic provider `https://agentrouter.org` or OpenAI Compatible provider `https://agentrouter.org/v1`)
+  - **Cursor IDE** (Override OpenAI Base URL to `https://agentrouter.org/v1`)
+  - **Roo Code / Kilo Code** (Custom Provider profile)
+- **Folder**: See [`coding-agents/README.md`](coding-agents/README.md) for step-by-step setup guides and environment configurations.
 
 ---
 
-## Snippets
+### 3. Desktop Applications — ✅ Confirmed Working
+Using AgentRouter inside desktop AI applications (Claude Desktop, Cowork, Cursor, etc.).
 
-Each snippet installs cleanly and runs with a single command.
-
-### OpenAI-Compatible (`/v1/chat/completions`)
-
-| Language | File | Install | Run |
-|---|---|---|---|
-| cURL / Bash | [`snippets/curl/chat.sh`](snippets/curl/chat.sh) | *(none)* | `bash snippets/curl/chat.sh` |
-| Node.js | [`snippets/node/openai.js`](snippets/node/openai.js) | `npm install openai` | `node snippets/node/openai.js` |
-| TypeScript | [`snippets/typescript/openai.ts`](snippets/typescript/openai.ts) | `npm install openai tsx` | `npx tsx snippets/typescript/openai.ts` |
-| Python | [`snippets/python/openai.py`](snippets/python/openai.py) | `pip install openai` | `python snippets/python/openai.py` |
-| Go | [`snippets/go/main.go`](snippets/go/main.go) | `go mod init app && go mod tidy` | `go run snippets/go/main.go` |
-| PHP | [`snippets/php/openai.php`](snippets/php/openai.php) | *(none — uses cURL extension)* | `php snippets/php/openai.php` |
-| C# (.NET) | [`snippets/csharp/Program.cs`](snippets/csharp/Program.cs) | *(none — uses System.Net.Http)* | `dotnet run --project snippets/csharp` |
-
-### Native Claude API (`/v1/messages`)
-
-Uses the Anthropic Messages format. Models default shown — switch between `claude-opus-5` and `claude-opus-4-8` via the comment in each file.
-
-| Language | File | Default Model | Install | Run |
-|---|---|---|---|---|
-| cURL / Bash | [`snippets/curl/claude.sh`](snippets/curl/claude.sh) | `claude-opus-5` | *(none)* | `bash snippets/curl/claude.sh` |
-| Node.js | [`snippets/node/claude.js`](snippets/node/claude.js) | `claude-opus-4-8` | *(none — uses built-in https)* | `node snippets/node/claude.js` |
-| TypeScript | [`snippets/typescript/claude.ts`](snippets/typescript/claude.ts) | `claude-opus-5` | `npm install tsx` | `npx tsx snippets/typescript/claude.ts` |
-| Python | [`snippets/python/claude.py`](snippets/python/claude.py) | `claude-opus-4-8` | `pip install requests` | `python snippets/python/claude.py` |
-| Go | [`snippets/go/claude.go`](snippets/go/claude.go) | `claude-opus-5` | `go mod init app && go mod tidy` | `go run snippets/go/claude.go` |
-| PHP | [`snippets/php/claude.php`](snippets/php/claude.php) | `claude-opus-4-8` | *(none — uses cURL extension)* | `php snippets/php/claude.php` |
-| C# (.NET) | [`snippets/csharp/Claude.cs`](snippets/csharp/Claude.cs) | `claude-opus-5` | *(none — uses System.Net.Http)* | `dotnet run --project snippets/csharp` |
+- **General Endpoint Rules**:
+  - **Claude / Anthropic Style Apps**: Set Base URL to `https://agentrouter.org` (NO `/v1`).
+  - **OpenAI Style Apps**: Set Base URL to `https://agentrouter.org/v1` (WITH `/v1`).
+- **Claude Desktop Setup**:
+  1. Open Settings → Custom Provider / API.
+  2. Set Base URL to `https://agentrouter.org`.
+  3. Paste your AgentRouter API key.
+  4. Select model (`claude-opus-4-8` or `claude-opus-5`).
+- **Folder**: See [`desktop-apps/README.md`](desktop-apps/README.md) for full instructions.
 
 ---
 
-## Troubleshooting
+## Additional Integration Resources
 
-| Error | Cause | Fix |
+- **Postman Collections**: Pre-built Postman collections in [`postman/`](postman/) (`openai-collection.json`, `claude-collection.json`).
+- **7-Language Snippets**: Native code implementations in [`snippets/`](snippets/) (Node.js, TypeScript, Python, Go, PHP, C#, cURL).
+
+---
+
+## API Key & Models
+
+Register at [agentrouter.org](https://agentrouter.org/register?aff=uhNr) to get your API key.
+
+| Model Name | Description | Base Endpoint |
 |---|---|---|
-| `unauthorized client detected` | Missing WAF headers | Add all 3 headers from the section above |
-| `null` / empty output | Key not set | Check `echo $AGENTROUTER_API_KEY` (or `echo %AGENTROUTER_API_KEY%` on Windows) |
-| `Cannot find module 'openai'` | Dep not installed | Run `npm install openai` in the snippet folder |
-| `ModuleNotFoundError: openai` | Dep not installed | Run `pip install openai` |
-
----
-
-## Postman
-
-Import these collections into Postman to test without writing code:
-
-- [`postman/openai-collection.json`](postman/openai-collection.json)
-- [`postman/claude-collection.json`](postman/claude-collection.json)
-
-Set `AGENTROUTER_API_KEY` as a Postman environment variable.
-
----
-
-## Disclaimer
-
-This uses an unofficial client fingerprint workaround. AgentRouter may update WAF rules without notice. **Never commit API keys to version control.**
+| `gpt-5.6-sol` | Fast GPT model | `/v1/chat/completions` |
+| `claude-opus-4-8` | Balanced Claude model | `/v1/messages` or `/v1/chat/completions` |
+| `claude-opus-5` | High quality Claude model | `/v1/messages` or `/v1/chat/completions` |
 
 ---
 
