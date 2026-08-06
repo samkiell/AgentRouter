@@ -1,3 +1,6 @@
+// Install: go mod init app && go mod tidy
+// Run:     go run main.go
+
 package main
 
 import (
