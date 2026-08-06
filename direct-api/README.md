@@ -6,6 +6,14 @@ Directly calling AgentRouter's base URL from custom code or standard HTTP client
 
 ---
 
+## 🔑 1. Get your key
+
+Sign up and create an API key at [agentrouter.org](https://agentrouter.org/register?aff=uhNr).
+
+👉 **[Get free key →](https://agentrouter.org/register?aff=uhNr)**
+
+---
+
 ## 🛑 Why Direct API Calls Fail
 
 AgentRouter's WAF inspects the client fingerprint. Standard HTTP libraries (e.g. `fetch`, unconfigured `curl`, default Anthropic SDKs) return:
