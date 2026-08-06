@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "AgentRouter Claude (Messages API)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Claude Messages",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer YOUR_API_KEY" },
+          { "key": "x-api-key", "value": "YOUR_API_KEY" },
+          { "key": "Originator", "value": "codex_cli_rs" },
+          { "key": "Version", "value": "0.101.0" },
+          { "key": "User-Agent", "value": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" },
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "anthropic-version", "value": "2023-06-01" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"claude-opus-4-8\",\n  \"max_tokens\": 256,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain photosynthesis in two short sentences.\"\n    }\n  ]\n}"
+        },
+        "url": "https://agentrouter.org/v1/messages"
+      }
+    }
+  ]
+}
