@@ -1,4 +1,5 @@
 <?php
+// Run: php openai.php
 
 $apiKey = getenv('AGENTROUTER_API_KEY');
 
