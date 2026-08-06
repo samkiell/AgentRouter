@@ -2,7 +2,7 @@
 
 Complete integration guide for AgentRouter — an unofficial OpenAI & Anthropic compatible API gateway.
 
-> 💡 **Live Interactive Dashboard**: Access the live integration dashboard at [agentrouter.samkiel.dev](https://agentrouter.samkiel.dev) or open [`index.html`](index.html).
+> 💡 **Live Interactive Dashboard**: Access the live integration dashboard at [agentrouter.samkiel.dev](https://agentrouter.samkiel.dev) or open [`dash/index.html`](dash/index.html).
 
 ---
 
@@ -13,7 +13,8 @@ AgentRouter supports 3 distinct integration paths:
 ### 1. Direct API (Raw HTTP / cURL) — ❌ Blocked by Design
 Using AgentRouter's base URL straight in your own custom app or codebase via raw HTTP / cURL calls is **blocked by Cloudflare WAF design**.
 
-- **Why it's blocked**: Cloudflare WAF returns `unauthorized client detected` for standard HTTP clients.
+- **Why it's blocked**: AgentRouter doesn't allow raw call to thier baseurl it returns `unauthorized client detected` for standard HTTP clients.
+The fix 👇 
 - **WAF Bypass Headers (Experimental)**: Requires spoofing 3 specific client headers on every request:
   ```http
   Originator: codex_cli_rs
