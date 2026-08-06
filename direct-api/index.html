@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentRouter Integration · Direct API (Opt 1)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { background: #0a0a0b; color: #e4e4e7; font-family: 'Inter', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .card { background: #18181b; border: 1px solid #27272a; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+  <header class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2 font-bold text-lg text-white">
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+        AgentRouter Integration
+      </a>
+      <a href="https://github.com/samkiell/AgentRouter/tree/main/direct-api" target="_blank" class="text-xs text-zinc-400 hover:text-white underline">
+        View direct-api/ on GitHub →
+      </a>
+    </div>
+  </header>
+
+  <header class="border-b border-zinc-800/60 py-10 text-center bg-gradient-to-b from-zinc-900/40 to-transparent">
+    <div class="max-w-3xl mx-auto px-6">
+      <span class="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono mb-3 inline-block">Option 1 · Confirmed Blocked / Not Supported ❌</span>
+      <h1 class="text-3xl font-bold text-white">Direct API (Raw HTTP / cURL)</h1>
+      <p class="mt-2 text-zinc-400 text-sm max-w-xl mx-auto">Using AgentRouter's base URL straight in your own app/codebase via raw HTTP or cURL is blocked by Cloudflare WAF design.</p>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-6 py-10 space-y-8">
+
+    <section class="card rounded-xl p-6 border-rose-500/30 bg-rose-950/10 space-y-3">
+      <h2 class="text-lg font-semibold text-white">Status &amp; Restrictions</h2>
+      <p class="text-sm text-zinc-300">Raw HTTP requests to <code class="text-rose-400 font-mono">https://agentrouter.org/v1</code> without client spoofing headers fail with <code class="text-rose-400 font-mono">unauthorized client detected</code>.</p>
+      <p class="text-xs text-zinc-400">AgentRouter enforces Cloudflare Web Application Firewall (WAF) checks specifically targeting unofficial automated clients.</p>
+    </section>
+
+    <section class="card rounded-xl p-6 space-y-4">
+      <h2 class="text-lg font-semibold text-white">Required WAF Bypass Headers</h2>
+      <p class="text-xs text-zinc-400">To emulate an authorized client in direct HTTP requests, you must append these 3 headers:</p>
+      <pre class="bg-zinc-950 p-4 rounded-lg text-xs font-mono text-emerald-400 border border-zinc-800 overflow-x-auto">Originator: codex_cli_rs
+Version: 0.101.0
+User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
+      <p class="text-xs text-zinc-500">Base URL: <code class="text-zinc-300 font-mono">https://agentrouter.org/v1</code></p>
+    </section>
+
+    <section class="card rounded-xl p-6 space-y-3">
+      <h2 class="text-lg font-semibold text-white">Recommended Alternatives</h2>
+      <p class="text-xs text-zinc-400">Instead of raw Direct API calls, use one of the supported integration paths:</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
+        <a href="../coding-agents/index.html" class="p-3 rounded bg-zinc-900 border border-zinc-800 hover:border-zinc-700 block">
+          <strong class="text-emerald-400 block mb-1">Option 2: Coding Agents ✅</strong>
+          Claude Code, Cline, Cursor, Roo Code / Kilo Code.
+        </a>
+        <a href="../desktop-apps/index.html" class="p-3 rounded bg-zinc-900 border border-zinc-800 hover:border-zinc-700 block">
+          <strong class="text-emerald-400 block mb-1">Option 3: Desktop Apps ✅</strong>
+          Claude Desktop, Cowork, Cursor.
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-zinc-800 py-8 text-center text-sm text-zinc-500">
+    <p>Made with garri💔 by <a href="https://samkiel.dev" target="_blank" class="text-zinc-300 hover:underline">SAMKIEL</a></p>
+    <p class="mt-2"><a href="https://github.com/samkiell/AgentRouter" target="_blank" class="hover:text-zinc-300">GitHub Repo</a></p>
+  </footer>
+</body>
+</html>
