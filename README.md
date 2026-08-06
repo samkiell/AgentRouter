@@ -1,78 +1,75 @@
-# AgentRouter Integration
+# AgentRouter Integration Guide
 
-Complete integration guide for AgentRouter — an unofficial OpenAI & Anthropic compatible API gateway.
-
-> 💡 **Live Interactive Dashboard**: Access the live integration dashboard at [agentrouter.samkiel.dev](https://agentrouter.samkiel.dev) or open [`dash/index.html`](dash/index.html).
+An unofficial, complete integration guide for **AgentRouter** — an OpenAI & Anthropic compatible API gateway.
 
 ---
 
-## 3 Integration Methods
+## ⚡ Quick Start
 
-AgentRouter supports 3 distinct integration paths:
+Launch the interactive Web Dashboard directly to test live API calls, generate cURL commands, and view setup guides:
 
-### 1. Direct API (Raw HTTP / cURL) — ❌ Blocked by Design
-Using AgentRouter's base URL straight in your own custom app or codebase via raw HTTP / cURL calls is **blocked by Cloudflare WAF design**.
-
-- **Why it's blocked**: AgentRouter doesn't allow raw call to thier baseurl it returns `unauthorized client detected` for standard HTTP clients.
-The fix 👇 
-- **WAF Bypass Headers (Experimental)**: Requires spoofing 3 specific client headers on every request:
-  ```http
-  Originator: codex_cli_rs
-  Version: 0.101.0
-  User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464
-  ```
-- **Base URLs**:
-  - OpenAI Format (`/v1/chat/completions`): `https://agentrouter.org/v1`
-  - Claude Format (`/v1/messages`): `https://agentrouter.org` (NO `/v1`)
-- **Folder**: See [`direct-api/README.md`](direct-api/README.md) for details & raw snippets.
+👉 **[agentrouter.samkiel.dev](https://agentrouter.samkiel.dev)** *(or open [`dash/index.html`](dash/index.html) locally)*
 
 ---
 
-### 2. Coding Agents & IDEs — ✅ Confirmed Working
-Integrating AgentRouter directly into official coding tools, CLI agents, and IDE extensions.
+## 🚀 The 3 Integration Methods
 
-- **Supported Tools**:
-  - **Claude Code CLI** (`npm install -g @anthropic-ai/claude-code`)
-  - **Claude Code VS Code Extension** (Configured via `claudeCode.environmentVariables` in settings.json)
-  - **Cline Extension** (Anthropic provider `https://agentrouter.org` or OpenAI Compatible provider `https://agentrouter.org/v1`)
-  - **Cursor IDE** (Override OpenAI Base URL to `https://agentrouter.org/v1`)
-  - **Roo Code / Kilo Code** (Custom Provider profile)
-- **Folder**: See [`coding-agents/README.md`](coding-agents/README.md) for step-by-step setup guides and environment configurations.
+AgentRouter supports 3 distinct integration paths depending on your workflow:
+
+<br/>
+
+> ### 1️⃣ Direct API (Raw HTTP / cURL)
+> **Status**: ❌ *Blocked by Design / Requires Client Spoofing*
+> 
+> Directly calling AgentRouter's base URL in custom apps or raw cURL scripts is blocked by Cloudflare WAF unless client spoofing headers are explicitly sent.
+> 
+> - **Why it's blocked**: WAF returns `unauthorized client detected` for standard HTTP clients.
+> - **Fix**: Include `Originator`, `Version`, and `User-Agent` headers on every call.
+> 
+> 📖 **[Read Full Direct API Guide →](direct-api/README.md)**
+
+<br/>
+
+> ### 2️⃣ Coding Agents & IDEs
+> **Status**: ✅ *Confirmed Working*
+> 
+> Seamlessly integrates into official developer tools, CLI agents, and IDE extensions without WAF issues.
+> 
+> - **Supported**: Claude Code CLI, Claude Code VS Code, Cline, Cursor IDE, Roo Code / Kilo Code.
+> - **Rule**: Claude models use `https://agentrouter.org`, GPT models use `https://agentrouter.org/v1`.
+> 
+> 📖 **[Read Full Coding Agents Guide →](coding-agents/README.md)**
+
+<br/>
+
+> ### 3️⃣ Desktop Applications
+> **Status**: ✅ *Confirmed Working*
+> 
+> Integrates into desktop AI clients (Claude Desktop, Cowork, Cursor Desktop, custom tools).
+> 
+> - **Supported**: Claude Desktop, Cowork, Cursor, and any app supporting custom Base URLs.
+> 
+> 📖 **[Read Full Desktop Apps Guide →](desktop-apps/README.md)**
 
 ---
 
-### 3. Desktop Applications — ✅ Confirmed Working
-Using AgentRouter inside desktop AI applications (Claude Desktop, Cowork, Cursor, etc.).
+## 📦 Additional Integration Resources
 
-- **General Endpoint Rules**:
-  - **Claude / Anthropic Style Apps**: Set Base URL to `https://agentrouter.org` (NO `/v1`).
-  - **OpenAI Style Apps**: Set Base URL to `https://agentrouter.org/v1` (WITH `/v1`).
-- **Claude Desktop Setup**:
-  1. Open Settings → Custom Provider / API.
-  2. Set Base URL to `https://agentrouter.org`.
-  3. Paste your AgentRouter API key.
-  4. Select model (`claude-opus-4-8` or `claude-opus-5`).
-- **Folder**: See [`desktop-apps/README.md`](desktop-apps/README.md) for full instructions.
+- **Postman Collections**: Pre-configured Postman collections in [`postman/`](postman/) (`openai-collection.json`, `claude-collection.json`).
+- **7-Language Code Snippets**: Native code implementations in [`snippets/`](snippets/) (Node.js, TypeScript, Python, Go, PHP, C#, cURL).
 
 ---
 
-## Additional Integration Resources
-
-- **Postman Collections**: Pre-built Postman collections in [`postman/`](postman/) (`openai-collection.json`, `claude-collection.json`).
-- **7-Language Snippets**: Native code implementations in [`snippets/`](snippets/) (Node.js, TypeScript, Python, Go, PHP, C#, cURL).
-
----
-
-## API Key & Models
+## 🔑 API Key & Available Models
 
 Register at [agentrouter.org](https://agentrouter.org/register?aff=uhNr) to get your API key.
 
-| Model Name | Description | Base Endpoint |
+| Model ID | Description | Primary Base Endpoint |
 |---|---|---|
-| `gpt-5.6-sol` | Fast GPT model | `/v1/chat/completions` |
-| `claude-opus-4-8` | Balanced Claude model | `/v1/messages` or `/v1/chat/completions` |
-| `claude-opus-5` | High quality Claude model | `/v1/messages` or `/v1/chat/completions` |
+| `gpt-5.6-sol` | Fast GPT model | `https://agentrouter.org/v1/chat/completions` |
+| `claude-opus-4-8` | Balanced Claude model | `https://agentrouter.org/v1/messages` |
+| `claude-opus-5` | High quality Claude model | `https://agentrouter.org/v1/messages` |
 
 ---
 
-Built by **ѕαмкιєℓ.∂єν** · [Portfolio](https://samkiel.dev)
+Made with garri💔 by **[SAMKIEL](https://samkiel.dev)**
