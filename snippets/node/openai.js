@@ -21,7 +21,7 @@ async function main() {
     max_tokens: 256,
   });
 
-  console.log(completion.choices[0].message.content);
+  console.log(completion?.choices?.[0]?.message?.content ?? JSON.stringify(completion, null, 2));
 }
 
 main().catch(console.error);
