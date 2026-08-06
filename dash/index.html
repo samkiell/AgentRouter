@@ -15,13 +15,13 @@
     .card { background: #18181b; border: 1px solid #27272a; transition: border-color 0.2s; }
     .card:hover { border-color: #3f3f46; }
     .input { background: #09090b; border: 1px solid #3f3f46; transition: border-color 0.15s, box-shadow 0.15s; }
-    .input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+    .input:focus { border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
     .btn { transition: all 0.15s ease; }
     .btn:hover { transform: translateY(-1px); }
     .btn:active { transform: translateY(0); }
     pre { white-space: pre-wrap; word-break: break-word; }
     .nav-tab { transition: all 0.2s; border-bottom: 2px solid transparent; cursor: pointer; }
-    .nav-tab.active { border-color: #6366f1; color: #ffffff; background: rgba(99, 102, 241, 0.12); }
+    .nav-tab.active { border-color: #10b981; color: #ffffff; background: rgba(16, 185, 129, 0.12); }
     .lang-tab { transition: all 0.15s; cursor: pointer; }
     .lang-tab.active { background: #27272a; color: #ffffff; border-color: #52525b; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -63,7 +63,7 @@
 
     <!-- Mobile Navigation Switcher (Direct API first) -->
     <div class="md:hidden flex border-t border-zinc-800/80 bg-zinc-900/60 overflow-x-auto text-xs font-medium px-4">
-      <button onclick="switchOption('opt1')" id="m-nav-opt1" class="py-2.5 px-3 whitespace-nowrap text-indigo-400 border-b-2 border-indigo-500 font-semibold">
+      <button onclick="switchOption('opt1')" id="m-nav-opt1" class="py-2.5 px-3 whitespace-nowrap text-emerald-400 border-b-2 border-emerald-500 font-semibold">
         Direct API ❌
       </button>
       <button onclick="switchOption('opt2')" id="m-nav-opt2" class="py-2.5 px-3 whitespace-nowrap text-zinc-400">
@@ -78,7 +78,7 @@
   <!-- Hero Header -->
   <div class="border-b border-zinc-800/60 py-10 text-center bg-gradient-to-b from-zinc-900/40 to-transparent">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono mb-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-mono mb-4">
         <span>agentrouter.samkiel.online</span>
       </div>
       <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">AgentRouter Integration Dashboard</h1>
@@ -117,50 +117,54 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
       <div class="card rounded-xl p-5 space-y-4">
         <h3 class="text-sm font-semibold text-white">Live API Tester</h3>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="space-y-4">
           <div>
             <label class="block text-xs font-medium text-zinc-400 mb-1">API Key</label>
-            <input id="sbKey" type="password" placeholder="sk-..." oninput="renderAll()"
+            <input id="apiKey" type="password" placeholder="sk-..." oninput="renderAll()"
                    class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none font-mono" />
           </div>
-          <div>
-            <label class="block text-xs font-medium text-zinc-400 mb-1">Model</label>
-            <select id="sbModel" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
-              <option value="gpt-5.6-sol" data-mode="openai">gpt-5.6-sol</option>
-              <option value="claude-opus-4-8" data-mode="claude">claude-opus-4-8</option>
-              <option value="claude-opus-5" data-mode="claude">claude-opus-5</option>
-            </select>
-          </div>
-        </div>
 
-        <div>
-          <label class="block text-xs font-medium text-zinc-400 mb-1">Prompt</label>
-          <textarea id="sbPrompt" rows="2" oninput="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none resize-none font-mono"
-                    placeholder="Hi, who are you?">Hi, who are you?</textarea>
-        </div>
-
-        <button id="sendBtn" onclick="runSandboxRequest()"
-                class="btn w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium flex items-center justify-center gap-2">
-          <span>Send</span>
-        </button>
-
-        <div id="sbResult" class="space-y-2 pt-2">
-          <div class="flex items-center justify-between text-xs text-zinc-400">
-            <span>Response Output</span>
-            <div class="flex items-center gap-2 font-mono">
-              <span id="statusBadge" class="px-2 py-0.5 rounded text-xs font-semibold"></span>
-              <span id="timeBadge"></span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1">Model</label>
+              <select id="model" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
+                <option value="gpt-5.6-sol">gpt-5.6-sol</option>
+                <option value="claude-opus-4-8">claude-opus-4-8</option>
+                <option value="claude-opus-5">claude-opus-5</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-zinc-400 mb-1">Mode</label>
+              <select id="mode" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
+                <option value="openai">OpenAI (/chat/completions)</option>
+                <option value="claude">Claude (/messages)</option>
+              </select>
             </div>
           </div>
-          <pre id="sbOutput" class="input rounded-lg p-4 text-xs font-mono max-h-72 overflow-y-auto text-zinc-400">Response output will appear here...</pre>
-        </div>
 
-        <div class="pt-3 border-t border-zinc-800">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-zinc-400">Generated cURL Command</span>
-            <button onclick="copyCurl()" class="text-xs px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition">Copy cURL</button>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1">Message</label>
+            <textarea id="prompt" rows="2" oninput="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none resize-none font-mono"
+                      placeholder="Hi">Hi</textarea>
           </div>
-          <pre id="curlBlock" class="input rounded-lg p-3 text-xs font-mono text-indigo-300 overflow-x-auto"></pre>
+
+          <button id="sendBtn" onclick="runTest()"
+                  class="btn w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium flex items-center justify-center gap-2">
+            <span>Send request</span>
+          </button>
+
+          <div id="result" class="hidden space-y-2 pt-2">
+            <label class="block text-xs font-medium text-zinc-400 mb-1">Response</label>
+            <pre id="output" class="input rounded-lg p-4 text-xs font-mono max-h-72 overflow-y-auto text-zinc-200"></pre>
+          </div>
+
+          <div class="pt-3 border-t border-zinc-800">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-zinc-400">Generated cURL Command</span>
+              <button onclick="copyCurl()" class="text-xs px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition">Copy cURL</button>
+            </div>
+            <pre id="curlBlock" class="input rounded-lg p-3 text-xs font-mono text-emerald-300 overflow-x-auto"></pre>
+          </div>
         </div>
       </div>
 
@@ -244,8 +248,8 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
             <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
               <strong>Claude Models:</strong> API Provider = <code class="text-emerald-400 font-mono">Anthropic</code> · Custom Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1) · Model = <code class="text-zinc-200 font-mono">claude-opus-4-8</code>
             </li>
-            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-indigo-500">
-              <strong>GPT Models:</strong> API Provider = <code class="text-indigo-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
+            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+              <strong>GPT Models:</strong> API Provider = <code class="text-emerald-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
             </li>
           </ul>
         </div>
@@ -258,7 +262,7 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
           </div>
           <div class="card rounded-xl p-5 space-y-2">
             <h3 class="text-base font-semibold text-white">Roo Code / Kilo Code</h3>
-            <p class="text-xs text-zinc-400">Custom Provider profile: Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> or OpenAI Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code>.</p>
+            <p class="text-xs text-zinc-400">Custom Provider profile: Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> or OpenAI Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
           </div>
         </div>
       </div>
@@ -289,8 +293,8 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
               Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1)
             </div>
             <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
-              <strong class="text-indigo-400 block mb-1">OpenAI Style</strong>
-              Base URL: <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> (WITH /v1)
+              <strong class="text-emerald-400 block mb-1">OpenAI Style</strong>
+              Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> (WITH /v1)
             </div>
           </div>
         </div>
@@ -770,33 +774,33 @@ class Program {
     }
 
     function renderCurl() {
-      const key = document.getElementById('sbKey').value.trim() || 'YOUR_API_KEY';
-      const opt = document.getElementById('sbModel').selectedOptions[0];
-      const model = opt.value;
-      const mode = opt.dataset.mode;
-      const prompt = (document.getElementById('sbPrompt').value.trim() || 'Hi').replace(/'/g, "\'");
+      const key = document.getElementById('apiKey')?.value.trim() || 'YOUR_API_KEY';
+      const model = document.getElementById('model')?.value || 'gpt-5.6-sol';
+      const mode = document.getElementById('mode')?.value || 'openai';
+      const prompt = (document.getElementById('prompt')?.value.trim() || 'Hi').replace(/'/g, "\'");
 
       let cmd;
       if (mode === 'claude') {
-        cmd = `curl -s -X POST https://agentrouter.org/v1/messages \
-  -H "Authorization: Bearer ${key}" \
-  -H "x-api-key: ${key}" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
+        cmd = `curl -s -X POST https://agentrouter.org/v1/messages \\
+  -H "Authorization: Bearer ${key}" \\
+  -H "x-api-key: ${key}" \\
+  -H "Content-Type: application/json" \\
+  -H "anthropic-version: 2023-06-01" \\
+  -H "Originator: codex_cli_rs" \\
+  -H "Version: 0.101.0" \\
+  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \\
   -d '{"model":"${model}","max_tokens":256,"messages":[{"role":"user","content":"${prompt}"}]}'`;
       } else {
-        cmd = `curl -s -X POST https://agentrouter.org/v1/chat/completions \
-  -H "Authorization: Bearer ${key}" \
-  -H "Content-Type: application/json" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
+        cmd = `curl -s -X POST https://agentrouter.org/v1/chat/completions \\
+  -H "Authorization: Bearer ${key}" \\
+  -H "Content-Type: application/json" \\
+  -H "Originator: codex_cli_rs" \\
+  -H "Version: 0.101.0" \\
+  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \\
   -d '{"model":"${model}","max_tokens":256,"messages":[{"role":"user","content":"${prompt}"}]}'`;
       }
-      document.getElementById('curlBlock').textContent = cmd;
+      const el = document.getElementById('curlBlock');
+      if (el) el.textContent = cmd;
     }
 
     function setSnipLang(lang) {
@@ -808,13 +812,13 @@ class Program {
     }
 
     function renderSnippet() {
-      const key = document.getElementById('sbKey').value.trim();
-      const opt = document.getElementById('sbModel').selectedOptions[0];
-      const model = opt.value;
-      const mode = opt.dataset.mode;
+      const key = document.getElementById('apiKey')?.value.trim() || '';
+      const model = document.getElementById('model')?.value || 'gpt-5.6-sol';
+      const mode = document.getElementById('mode')?.value || 'openai';
       const fn = SNIPPETS[activeSnipLang];
       if (fn) {
-        document.getElementById('snippetBlock').textContent = fn(key, model, mode);
+        const el = document.getElementById('snippetBlock');
+        if (el) el.textContent = fn(key, model, mode);
       }
     }
 
@@ -838,83 +842,71 @@ class Program {
 
       const activeMNav = document.getElementById('m-nav-' + opt);
       if (activeMNav) {
-        activeMNav.className = 'py-2.5 px-3 whitespace-nowrap text-indigo-400 border-b-2 border-indigo-500 font-semibold';
+        activeMNav.className = 'py-2.5 px-3 whitespace-nowrap text-emerald-400 border-b-2 border-emerald-500 font-semibold';
       }
     }
 
-    async function runSandboxRequest() {
-      const key = document.getElementById('sbKey')?.value.trim();
+    async function runTest() {
+      const key = document.getElementById('apiKey').value.trim();
+      const model = document.getElementById('model').value;
+      const mode = document.getElementById('mode').value;
+      const prompt = document.getElementById('prompt').value.trim() || 'Hi';
+      const btn = document.getElementById('sendBtn');
+      const result = document.getElementById('result');
+      const output = document.getElementById('output');
+
       if (!key) {
-        showToast('Paste your API key first');
-        document.getElementById('sbKey')?.focus();
+        alert('Paste your API key first');
         return;
       }
 
-      const btn = document.getElementById('sendBtn');
-      const output = document.getElementById('sbOutput');
-      const statusBadge = document.getElementById('statusBadge');
-      const timeBadge = document.getElementById('timeBadge');
-
       btn.disabled = true;
-      btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Sending...</span>`;
-      output.className = 'input rounded-lg p-4 text-xs font-mono max-h-72 overflow-y-auto text-zinc-200';
-      output.textContent = 'Waiting for response...';
-      statusBadge.textContent = '';
-      statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold';
-      timeBadge.textContent = '';
+      btn.textContent = 'Sending...';
+      result.classList.remove('hidden');
+      output.textContent = 'Loading...';
+
+      const headers = {
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'Originator': 'codex_cli_rs',
+        'Version': '0.101.0',
+        'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
+      };
+
+      let url, body;
+
+      if (mode === 'claude') {
+        url = 'https://agentrouter.org/v1/messages';
+        headers['x-api-key'] = key;
+        headers['anthropic-version'] = '2023-06-01';
+        body = {
+          model,
+          max_tokens: 256,
+          messages: [{ role: 'user', content: prompt }]
+        };
+      } else {
+        url = 'https://agentrouter.org/v1/chat/completions';
+        body = {
+          model,
+          max_tokens: 256,
+          messages: [{ role: 'user', content: prompt }]
+        };
+      }
 
       try {
-        const modelSelect = document.getElementById('sbModel');
-        const opt = modelSelect ? modelSelect.selectedOptions[0] : null;
-        const model = opt ? opt.value : 'gpt-5.6-sol';
-        const mode = opt ? opt.dataset.mode : 'openai';
-        const prompt = document.getElementById('sbPrompt').value.trim() || 'Hi';
-        const t0 = Date.now();
-        const headers = {
-          'Authorization': `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          'Originator': 'codex_cli_rs',
-          'Version': '0.101.0',
-          'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
-        };
-
-        let url, body;
-        if (mode === 'claude') {
-          url = 'https://agentrouter.org/v1/messages';
-          headers['x-api-key'] = key;
-          headers['anthropic-version'] = '2023-06-01';
-          body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
-        } else {
-          url = 'https://agentrouter.org/v1/chat/completions';
-          body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
-        }
-
-        const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
-        const ms = Date.now() - t0;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body)
+        });
         const data = await res.json();
         output.textContent = JSON.stringify(data, null, 2);
-
-        if (res.ok) {
-          statusBadge.textContent = `${res.status} OK`;
-          statusBadge.classList.add('bg-emerald-950', 'text-emerald-400', 'border', 'border-emerald-800');
-        } else {
-          statusBadge.textContent = `${res.status} Error`;
-          statusBadge.classList.add('bg-rose-950', 'text-rose-400', 'border', 'border-rose-800');
-        }
-        timeBadge.textContent = `${ms}ms`;
       } catch (err) {
-        statusBadge.textContent = 'CORS / WAF Blocked';
-        statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-amber-950 text-amber-400 border border-amber-800';
-        output.textContent = JSON.stringify({
-          error: "Browser fetch blocked by CORS / Cloudflare WAF policy",
-          message: "Browsers prohibit sending spoofed client headers (User-Agent, Originator, Version).",
-          solution: "Copy & run the generated cURL command below in your terminal to test live with your API key."
-        }, null, 2);
-        showToast('Use cURL command below in terminal');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Send</span>`;
+        output.textContent = 'Error: ' + err.message;
       }
+
+      btn.disabled = false;
+      btn.textContent = 'Send request';
     }
 
     function copyCurl() {
