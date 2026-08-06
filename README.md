@@ -1,39 +1,64 @@
 # AgentRouter Direct API Guide
 
-Use AgentRouter as a normal OpenAI-compatible endpoint in your own apps, websites, or bots.
+Use AgentRouter as a standard OpenAI-compatible API endpoint in your applications, services, or automation scripts.
 
-**Working models right now:**
+## Active Models
 - `gpt-5.6-sol`
 - `claude-opus-4-8`
 - `claude-opus-5`
 
+---
+
 ## Quick Start
 
-1. Get your API key from [agentrouter.org](https://agentrouter.org/register?aff=uhNr)
-2. Always send these 3 extra headers (this is the WAF bypass):
+### 1. Requirements
+* API Key from [agentrouter.org](https://agentrouter.org/register?aff=uhNr)
+* Custom WAF Bypass Headers set on **every** request
 
+```bash
+export AGENTROUTER_API_KEY="your_api_key_here"
 ```
+
+### 2. Required Headers
+```http
 Originator: codex_cli_rs
 Version: 0.101.0
 User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464
 ```
 
-3. Base URL: `https://agentrouter.org/v1`
-
-That’s it. Point any OpenAI-compatible client at it.
-
-## Folders
-
-- [`postman/`](postman/) → ready-to-import Postman collections
-- [`examples/`](examples/) → Node, TypeScript, Python snippets
-- [`waf-bypass.md`](waf-bypass.md) → short explanation why the headers are needed
-
-## Important
-
-This is an unofficial workaround. AgentRouter can change the fingerprint check anytime.  
-Use at your own risk. Never commit your real API key.
+### 3. cURL Example
+```bash
+curl -X POST https://agentrouter.org/v1/chat/completions \
+  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Originator: codex_cli_rs" \
+  -H "Version: 0.101.0" \
+  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
+  -d '{
+    "model": "gpt-5.6-sol",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
 
 ---
 
-Made with garri💔 by **ѕαмкιєℓ.∂єν** 
-Portfolio · [ѕαмкιєℓ.∂єν](https://samkiel.dev)
+## Repository Structure
+
+- [`examples/`](examples/)
+  - [Node.js](examples/node/openai.js)
+  - [Python](examples/python/openai.py)
+  - [TypeScript](examples/typescript/openai.ts)
+- [`postman/`](postman/)
+  - [OpenAI Collection](postman/openai-collection.json)
+  - [Claude Collection](postman/claude-collection.json)
+- [`waf-bypass.md`](waf-bypass.md) — Technical details regarding WAF header requirements
+
+---
+
+## Disclaimer
+
+This project uses an unofficial workaround for client verification. AgentRouter may update fingerprint detection rules without notice. Never commit API keys to version control.
+
+---
+
+Built by **ѕαмкιєℓ.∂єν** · [Portfolio](https://samkiel.dev)
