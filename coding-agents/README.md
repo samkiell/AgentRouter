@@ -43,17 +43,34 @@ Run `claude` in your terminal.
 ---
 
 ### 2. Claude Code (VS Code Extension)
-Open VS Code User Settings JSON (`Cmd/Ctrl+Shift+P` → `Open User Settings (JSON)`) and add:
+Search for **Claude Code** in VS Code Extensions and install it.
+
+If required by your environment, install the local Claude CLI program once:
+- **macOS / Linux / WSL**:
+  ```bash
+  curl -fsSL https://claude.ai/install.sh | bash
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  irm https://claude.ai/install.ps1 | iex
+  ```
+Verify installation: `claude --version`.
+
+Open VS Code User Settings JSON (`Cmd/Ctrl+Shift+P` → `Open User Settings (JSON)`) and append:
 ```json
 {
   "claudeCode.environmentVariables": [
     { "name": "ANTHROPIC_AUTH_TOKEN", "value": "sk-your-api-key" },
     { "name": "ANTHROPIC_BASE_URL", "value": "https://agentrouter.org" },
+    { "name": "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY", "value": "1" },
     { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-8" }
   ],
-  "claudeCode.disableLoginPrompt": true
+  "claudeCode.disableLoginPrompt": true,
+  "claudeCode.initialPermissionMode": "acceptEdits"
 }
 ```
+
+> 💡 **Tip**: On the Claude Code extension details page, click the Gear icon → Settings and enable **Disable Login Prompt** to prevent official login box popups.
 
 ---
 

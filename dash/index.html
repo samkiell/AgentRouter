@@ -297,15 +297,29 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
           <!-- Claude Code (VS Code Extension) -->
           <div id="card-claude-vscode" class="card rounded-xl p-5 space-y-3">
             <h3 class="text-base font-semibold text-white">Claude Code (VS Code Extension)</h3>
+            <p class="text-xs text-zinc-400">Search for <strong>Claude Code</strong> in VS Code Extensions and install it. If required by your system, install the local CLI runner once (<code class="text-zinc-300 font-mono">claude --version</code>):</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 bg-zinc-950 rounded border border-zinc-800 font-mono text-emerald-300 text-[11px] overflow-x-auto">
+                <span class="text-zinc-500 font-sans block mb-1">macOS / Linux / WSL</span>
+                curl -fsSL https://claude.ai/install.sh | bash
+              </div>
+              <div class="p-2.5 bg-zinc-950 rounded border border-zinc-800 font-mono text-emerald-300 text-[11px] overflow-x-auto">
+                <span class="text-zinc-500 font-sans block mb-1">Windows PowerShell</span>
+                irm https://claude.ai/install.ps1 | iex
+              </div>
+            </div>
             <p class="text-xs text-zinc-400">Open VS Code User Settings JSON (<code class="text-zinc-300 font-mono">Cmd/Ctrl+Shift+P → Open User Settings (JSON)</code>) and add:</p>
             <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">{
   "claudeCode.environmentVariables": [
     { "name": "ANTHROPIC_AUTH_TOKEN", "value": "your-agentrouter-api-key" },
     { "name": "ANTHROPIC_BASE_URL", "value": "https://agentrouter.org" },
-    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-6" }
+    { "name": "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY", "value": "1" },
+    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-8" }
   ],
-  "claudeCode.disableLoginPrompt": true
+  "claudeCode.disableLoginPrompt": true,
+  "claudeCode.initialPermissionMode": "acceptEdits"
 }</pre>
+            <p class="text-xs text-zinc-400">On the Claude Code plugin details page, click <strong>Gear → Settings</strong> and enable <strong>Disable Login Prompt</strong> to stop official login popups.</p>
           </div>
 
           <!-- GitHub Copilot -->
