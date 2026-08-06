@@ -124,22 +124,13 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
                    class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none font-mono" />
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1">Model</label>
-              <select id="model" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
-                <option value="gpt-5.6-sol">gpt-5.6-sol</option>
-                <option value="claude-opus-4-8">claude-opus-4-8</option>
-                <option value="claude-opus-5">claude-opus-5</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-zinc-400 mb-1">Mode</label>
-              <select id="mode" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
-                <option value="openai">OpenAI (/chat/completions)</option>
-                <option value="claude">Claude (/messages)</option>
-              </select>
-            </div>
+          <div>
+            <label class="block text-xs font-medium text-zinc-400 mb-1">Model</label>
+            <select id="model" onchange="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none">
+              <option value="claude-opus-5" selected>claude-opus-5</option>
+              <option value="claude-opus-4-8">claude-opus-4-8</option>
+              <option value="gpt-5.6-sol">gpt-5.6-sol</option>
+            </select>
           </div>
 
           <div>
@@ -172,9 +163,9 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
       <div class="card rounded-xl p-5 space-y-4">
         <h3 class="text-sm font-semibold text-white">7-Language Code Snippets</h3>
         <div class="flex flex-wrap gap-2">
-          <button onclick="setSnipLang('curl')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium active" data-lang="curl">cURL</button>
+          <button onclick="setSnipLang('curl')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="curl">cURL</button>
           <button onclick="setSnipLang('node')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="node">Node.js</button>
-          <button onclick="setSnipLang('typescript')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="typescript">TypeScript</button>
+          <button onclick="setSnipLang('typescript')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium active" data-lang="typescript">TypeScript</button>
           <button onclick="setSnipLang('python')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="python">Python</button>
           <button onclick="setSnipLang('go')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="go">Go</button>
           <button onclick="setSnipLang('php')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="php">PHP</button>
@@ -326,6 +317,9 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
           </select>
           <input id="issueTitle" type="text" placeholder="Summary / issue title..." class="input sm:col-span-2 rounded-lg px-3 py-2 text-xs text-white outline-none" />
         </div>
+        <div>
+          <textarea id="issueBody" rows="3" placeholder="Describe the issue or details here..." class="input w-full rounded-lg px-3 py-2 text-xs text-white outline-none resize-none font-sans"></textarea>
+        </div>
         <div class="flex items-center gap-3">
           <button onclick="openGitHubIssue()" class="btn px-4 py-2 rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium inline-flex items-center gap-1.5">
             Report on GitHub →
@@ -340,7 +334,7 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
   </main>
 
   <footer class="border-t border-zinc-800/80 py-8 text-center text-xs text-zinc-500 mt-auto">
-    <p>Made with garri💔 by <a href="https://samkiel.online" target="_blank" class="text-zinc-300 hover:underline">SAMKIEL</a></p>
+    <p>Made with garri💔 by <a href="https://samkiel.online" target="_blank" class="text-zinc-300 hover:underline">ѕαмкιєℓ.∂єν</a></p>
     <p class="mt-2 flex justify-center gap-4 text-xs">
       <a href="https://github.com/samkiell/AgentRouter" target="_blank" class="hover:text-zinc-300 transition">GitHub Repository</a>
       <span>·</span>
@@ -348,14 +342,15 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
       <span>·</span>
       <a href="https://github.com/samkiell/AgentRouter/issues" target="_blank" class="hover:text-zinc-300 transition">GitHub Issues</a>
     </p>
-    <p class="mt-3 text-[11px] text-zinc-600">Deployed at agentrouter.samkiel.online · Unofficial integration guide.</p>
   </footer>
 
   <!-- Toast -->
   <div id="toast" class="fixed bottom-5 right-5 px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white text-xs font-medium shadow-2xl transition-all duration-300 opacity-0 translate-y-4 pointer-events-none z-50"></div>
 
   <script>
-    let activeSnipLang = 'curl';
+    let activeSnipLang = 'typescript';
+
+    const getKey = (k, envExpr) => k ? `"${k}"` : envExpr;
 
     const SNIPPETS = {
       curl: (k, m, mode) => mode === 'claude' ? `#!/usr/bin/env bash
@@ -363,14 +358,14 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
 
 export AGENTROUTER_API_KEY="${k || 'your_api_key_here'}"
 
-curl -s -X POST https://agentrouter.org/v1/messages \
-  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
-  -H "x-api-key: $AGENTROUTER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
+curl -s -X POST https://agentrouter.org/v1/messages \\
+  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \\
+  -H "x-api-key: $AGENTROUTER_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -H "anthropic-version: 2023-06-01" \\
+  -H "Originator: codex_cli_rs" \\
+  -H "Version: 0.101.0" \\
+  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \\
   -d '{
     "model": "${m}",
     "max_tokens": 256,
@@ -380,12 +375,12 @@ curl -s -X POST https://agentrouter.org/v1/messages \
 
 export AGENTROUTER_API_KEY="${k || 'your_api_key_here'}"
 
-curl -s -X POST https://agentrouter.org/v1/chat/completions \
-  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "Originator: codex_cli_rs" \
-  -H "Version: 0.101.0" \
-  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \
+curl -s -X POST https://agentrouter.org/v1/chat/completions \\
+  -H "Authorization: Bearer $AGENTROUTER_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -H "Originator: codex_cli_rs" \\
+  -H "Version: 0.101.0" \\
+  -H "User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" \\
   -d '{
     "model": "${m}",
     "messages": [{"role": "user", "content": "Hi"}],
@@ -397,7 +392,7 @@ curl -s -X POST https://agentrouter.org/v1/chat/completions \
 
 const https = require("https");
 
-const apiKey = "${k || 'process.env.AGENTROUTER_API_KEY'}";
+const apiKey = ${getKey(k, 'process.env.AGENTROUTER_API_KEY')};
 const body = JSON.stringify({
   model: "${m}",
   max_tokens: 256,
@@ -409,7 +404,7 @@ const req = https.request({
   path: "/v1/messages",
   method: "POST",
   headers: {
-    "Authorization": `Bearer ${apiKey}`,
+    "Authorization": \`Bearer \${apiKey}\`,
     "x-api-key": apiKey,
     "Content-Type": "application/json",
     "anthropic-version": "2023-06-01",
@@ -422,8 +417,12 @@ const req = https.request({
   let data = "";
   res.on("data", chunk => data += chunk);
   res.on("end", () => {
-    const json = JSON.parse(data);
-    console.log(json?.content?.[0]?.text ?? data);
+    try {
+      const json = JSON.parse(data);
+      console.log(json?.content?.[0]?.text ?? json?.error?.message ?? data);
+    } catch {
+      console.log(data);
+    }
   });
 });
 
@@ -435,7 +434,7 @@ req.end();` : `// Install: npm install openai
 const OpenAI = require("openai");
 
 const client = new OpenAI({
-  apiKey: "${k || 'process.env.AGENTROUTER_API_KEY'}",
+  apiKey: ${getKey(k, 'process.env.AGENTROUTER_API_KEY')},
   baseURL: "https://agentrouter.org/v1",
   defaultHeaders: {
     Originator: "codex_cli_rs",
@@ -460,7 +459,7 @@ main().catch(console.error);`,
 
 import * as https from "https";
 
-const apiKey = "${k || 'process.env.AGENTROUTER_API_KEY'}";
+const apiKey = ${getKey(k, 'process.env.AGENTROUTER_API_KEY')};
 const body = JSON.stringify({
   model: "${m}",
   max_tokens: 256,
@@ -472,7 +471,7 @@ const req = https.request({
   path: "/v1/messages",
   method: "POST",
   headers: {
-    "Authorization": `Bearer ${apiKey}`,
+    "Authorization": \`Bearer \${apiKey}\`,
     "x-api-key": apiKey,
     "Content-Type": "application/json",
     "anthropic-version": "2023-06-01",
@@ -485,8 +484,12 @@ const req = https.request({
   let data = "";
   res.on("data", (chunk: string) => data += chunk);
   res.on("end", () => {
-    const json = JSON.parse(data);
-    console.log(json?.content?.[0]?.text ?? data);
+    try {
+      const json = JSON.parse(data);
+      console.log(json?.content?.[0]?.text ?? json?.error?.message ?? data);
+    } catch {
+      console.log(data);
+    }
   });
 });
 
@@ -498,7 +501,7 @@ req.end();` : `// Install: npm install openai tsx
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: "${k || 'process.env.AGENTROUTER_API_KEY'}",
+  apiKey: ${getKey(k, 'process.env.AGENTROUTER_API_KEY')},
   baseURL: "https://agentrouter.org/v1",
   defaultHeaders: {
     Originator: "codex_cli_rs",
@@ -524,7 +527,7 @@ main().catch(console.error);`,
 import os
 import requests
 
-api_key = "${k || 'os.getenv("AGENTROUTER_API_KEY")'}"
+api_key = ${getKey(k, 'os.getenv("AGENTROUTER_API_KEY")')}
 
 response = requests.post(
     "https://agentrouter.org/v1/messages",
@@ -544,15 +547,18 @@ response = requests.post(
     },
 )
 
-data = response.json()
-print(data.get("content", [{}])[0].get("text", response.text))` : `# Install: pip install openai
+try:
+    data = response.json()
+    print(data.get("content", [{}])[0].get("text", response.text))
+except Exception:
+    print(response.text)` : `# Install: pip install openai
 # Run: python openai.py
 
 import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="${k || 'os.getenv("AGENTROUTER_API_KEY")'}",
+    api_key=${getKey(k, 'os.getenv("AGENTROUTER_API_KEY")')},
     base_url="https://agentrouter.org/v1",
     default_headers={
         "Originator": "codex_cli_rs",
@@ -584,7 +590,7 @@ import (
 )
 
 func main() {
-	apiKey := "${k || 'os.Getenv("AGENTROUTER_API_KEY")'}"
+	apiKey := ${getKey(k, 'os.Getenv("AGENTROUTER_API_KEY")')}
 
 	body, _ := json.Marshal(map[string]any{
 		"model":      "${m}",
@@ -601,14 +607,23 @@ func main() {
 	req.Header.Set("Version", "0.101.0")
 	req.Header.Set("User-Agent", "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464")
 
-	resp, _ := (&http.Client{}).Do(req)
+	resp, err := (&http.Client{}).Do(req)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 	defer resp.Body.Close()
 	b, _ := io.ReadAll(resp.Body)
 
 	var out map[string]any
 	json.Unmarshal(b, &out)
-	content := out["content"].([]any)
-	fmt.Println(content[0].(map[string]any)["text"])
+	if content, ok := out["content"].([]any); ok && len(content) > 0 {
+		if text, ok := content[0].(map[string]any)["text"].(string); ok {
+			fmt.Println(text)
+			return
+		}
+	}
+	fmt.Println(string(b))
 }` : `// Install: go mod init app && go mod tidy
 // Run: go run main.go
 
@@ -624,7 +639,7 @@ import (
 )
 
 func main() {
-	apiKey := "${k || 'os.Getenv("AGENTROUTER_API_KEY")'}"
+	apiKey := ${getKey(k, 'os.Getenv("AGENTROUTER_API_KEY")')}
 
 	body, _ := json.Marshal(map[string]any{
 		"model":      "${m}",
@@ -639,20 +654,29 @@ func main() {
 	req.Header.Set("Version", "0.101.0")
 	req.Header.Set("User-Agent", "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464")
 
-	resp, _ := (&http.Client{}).Do(req)
+	resp, err := (&http.Client{}).Do(req)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 	defer resp.Body.Close()
 	b, _ := io.ReadAll(resp.Body)
 
 	var out map[string]any
 	json.Unmarshal(b, &out)
-	choices := out["choices"].([]any)
-	fmt.Println(choices[0].(map[string]any)["message"].(map[string]any)["content"])
+	if choices, ok := out["choices"].([]any); ok && len(choices) > 0 {
+		if msg, ok := choices[0].(map[string]any)["message"].(map[string]any); ok {
+			fmt.Println(msg["content"])
+			return
+		}
+	}
+	fmt.Println(string(b))
 }`,
 
       php: (k, m, mode) => mode === 'claude' ? `<?php
 // Run: php claude.php
 
-$apiKey = "${k || 'getenv("AGENTROUTER_API_KEY")'}";
+$apiKey = ${getKey(k, 'getenv("AGENTROUTER_API_KEY")')};
 
 $ch = curl_init('https://agentrouter.org/v1/messages');
 curl_setopt_array($ch, [
@@ -676,10 +700,10 @@ curl_setopt_array($ch, [
 
 $result = json_decode(curl_exec($ch), true);
 curl_close($ch);
-echo $result['content'][0]['text'] . "\n";` : `<?php
+echo ($result['content'][0]['text'] ?? json_encode($result)) . "\n";` : `<?php
 // Run: php openai.php
 
-$apiKey = "${k || 'getenv("AGENTROUTER_API_KEY")'}";
+$apiKey = ${getKey(k, 'getenv("AGENTROUTER_API_KEY")')};
 
 $ch = curl_init('https://agentrouter.org/v1/chat/completions');
 curl_setopt_array($ch, [
@@ -701,7 +725,7 @@ curl_setopt_array($ch, [
 
 $result = json_decode(curl_exec($ch), true);
 curl_close($ch);
-echo $result['choices'][0]['message']['content'] . "\n";`,
+echo ($result['choices'][0]['message']['content'] ?? json_encode($result)) . "\n";`,
 
       csharp: (k, m, mode) => mode === 'claude' ? `// Run: dotnet run
 
@@ -713,7 +737,7 @@ using System.Threading.Tasks;
 
 class Claude {
     static async Task Main() {
-        string apiKey = "${k || 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")'}";
+        string apiKey = ${getKey(k, 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")')};
         using var client = new HttpClient();
 
         var req = new HttpRequestMessage(HttpMethod.Post, "https://agentrouter.org/v1/messages") {
@@ -732,8 +756,7 @@ class Claude {
 
         var res = await client.SendAsync(req);
         var body = await res.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(body);
-        Console.WriteLine(doc.RootElement.GetProperty("content")[0].GetProperty("text").GetString());
+        Console.WriteLine(body);
     }
 }` : `// Run: dotnet run
 
@@ -745,7 +768,7 @@ using System.Threading.Tasks;
 
 class Program {
     static async Task Main() {
-        string apiKey = "${k || 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")'}";
+        string apiKey = ${getKey(k, 'Environment.GetEnvironmentVariable("AGENTROUTER_API_KEY")')};
         using var client = new HttpClient();
 
         var req = new HttpRequestMessage(HttpMethod.Post, "https://agentrouter.org/v1/chat/completions") {
@@ -762,8 +785,7 @@ class Program {
 
         var res = await client.SendAsync(req);
         var body = await res.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(body);
-        Console.WriteLine(doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString());
+        Console.WriteLine(body);
     }
 }`
     };
@@ -775,9 +797,9 @@ class Program {
 
     function renderCurl() {
       const key = document.getElementById('apiKey')?.value.trim() || 'YOUR_API_KEY';
-      const model = document.getElementById('model')?.value || 'gpt-5.6-sol';
-      const mode = document.getElementById('mode')?.value || 'openai';
-      const prompt = (document.getElementById('prompt')?.value.trim() || 'Hi').replace(/'/g, "\'");
+      const model = document.getElementById('model')?.value || 'claude-opus-5';
+      const mode = model.startsWith('claude') ? 'claude' : 'openai';
+      const prompt = (document.getElementById('prompt')?.value.trim() || 'Hi').replace(/'/g, "'\\''");
 
       let cmd;
       if (mode === 'claude') {
@@ -813,8 +835,8 @@ class Program {
 
     function renderSnippet() {
       const key = document.getElementById('apiKey')?.value.trim() || '';
-      const model = document.getElementById('model')?.value || 'gpt-5.6-sol';
-      const mode = document.getElementById('mode')?.value || 'openai';
+      const model = document.getElementById('model')?.value || 'claude-opus-5';
+      const mode = model.startsWith('claude') ? 'claude' : 'openai';
       const fn = SNIPPETS[activeSnipLang];
       if (fn) {
         const el = document.getElementById('snippetBlock');
@@ -849,7 +871,7 @@ class Program {
     async function runTest() {
       const key = document.getElementById('apiKey').value.trim();
       const model = document.getElementById('model').value;
-      const mode = document.getElementById('mode').value;
+      const mode = model.startsWith('claude') ? 'claude' : 'openai';
       const prompt = document.getElementById('prompt').value.trim() || 'Hi';
       const btn = document.getElementById('sendBtn');
       const result = document.getElementById('result');
@@ -869,8 +891,7 @@ class Program {
         'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json',
         'Originator': 'codex_cli_rs',
-        'Version': '0.101.0',
-        'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
+        'Version': '0.101.0'
       };
 
       let url, body;
@@ -899,10 +920,15 @@ class Program {
           headers,
           body: JSON.stringify(body)
         });
-        const data = await res.json();
-        output.textContent = JSON.stringify(data, null, 2);
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          output.textContent = JSON.stringify(data, null, 2);
+        } catch {
+          output.textContent = text;
+        }
       } catch (err) {
-        output.textContent = 'Error: ' + err.message;
+        output.textContent = 'Browser Fetch Error: ' + err.message + '\n\nNote: Browsers restrict custom User-Agent headers and cross-origin (CORS) requests to Cloudflare WAF protected endpoints. Use the generated cURL command in your terminal instead.';
       }
 
       btn.disabled = false;
@@ -922,8 +948,23 @@ class Program {
     function openGitHubIssue() {
       const type = document.getElementById('issueType')?.value || '🐛 Bug Report';
       const titleText = document.getElementById('issueTitle')?.value.trim() || '';
-      const title = encodeURIComponent(`[Integration] ${type}${titleText ? ': ' + titleText : ''}`);
-      window.open(`https://github.com/samkiell/AgentRouter/issues/new?title=${title}`, '_blank');
+      const bodyText = document.getElementById('issueBody')?.value.trim() || '';
+      const model = document.getElementById('model')?.value || 'claude-opus-5';
+
+      const titleParam = encodeURIComponent(`[Integration] ${type}${titleText ? ': ' + titleText : ''}`);
+
+      const bodyTemplate = `### Type
+${type}
+
+### Description
+${bodyText || 'No description provided.'}
+
+---
+*Submitted from AgentRouter Integration Dashboard (Model: ${model})*`;
+
+      const bodyParam = encodeURIComponent(bodyTemplate);
+
+      window.open(`https://github.com/samkiell/AgentRouter/issues/new?title=${titleParam}&body=${bodyParam}`, '_blank');
     }
 
     let toastTimer;
