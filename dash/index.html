@@ -110,7 +110,7 @@
       </div>
 
       <!-- Get API Key CTA Card -->
-      <div id="card-get-key" class="card rounded-xl p-5 space-y-3">
+      <div class="card rounded-xl p-5 space-y-3">
         <h3 class="text-base font-semibold text-white">1. Get your key</h3>
         <p class="text-xs text-zinc-400">Sign up and create an API key.</p>
         <div>
@@ -122,7 +122,7 @@
       </div>
 
       <!-- WAF Explanation & Tester -->
-      <div id="card-waf-bypass" class="card rounded-xl p-5 space-y-3">
+      <div class="card rounded-xl p-5 space-y-3">
         <h3 class="text-base font-semibold text-white">Required WAF Bypass Headers</h3>
         <p class="text-xs text-zinc-400">If attempting direct requests from custom scripts, Cloudflare WAF returns <code class="text-rose-400 font-mono">unauthorized client</code> unless client headers are spoofed:</p>
         <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-400 overflow-x-auto">Originator: codex_cli_rs
@@ -131,7 +131,7 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
       </div>
 
       <!-- Live Sandbox Box -->
-      <div id="card-live-tester" class="card rounded-xl p-5 space-y-4">
+      <div class="card rounded-xl p-5 space-y-4">
         <h3 class="text-sm font-semibold text-white">Live API Tester</h3>
         
         <div class="space-y-4">
@@ -177,7 +177,7 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
       </div>
 
       <!-- Code Snippets Browser -->
-      <div id="card-snippets" class="card rounded-xl p-5 space-y-4">
+      <div class="card rounded-xl p-5 space-y-4">
         <h3 class="text-sm font-semibold text-white">7-Language Code Snippets</h3>
         <div class="flex flex-wrap gap-2">
           <button onclick="setSnipLang('curl')" class="lang-tab px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-xs text-zinc-400 font-medium" data-lang="curl">cURL</button>
@@ -399,7 +399,7 @@ $env:ANTHROPIC_MODEL="claude-opus-4-6"</pre>
       </div>
 
       <div class="space-y-4">
-        <div id="card-desktop-rule" class="card rounded-xl p-5 space-y-3">
+        <div class="card rounded-xl p-5 space-y-3">
           <h3 class="text-base font-semibold text-white">General Endpoint Rule</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
@@ -413,7 +413,7 @@ $env:ANTHROPIC_MODEL="claude-opus-4-6"</pre>
           </div>
         </div>
 
-        <div id="card-claude-desktop" class="card rounded-xl p-5 space-y-3">
+        <div class="card rounded-xl p-5 space-y-3">
           <h3 class="text-base font-semibold text-white">Claude App (Desktop) Instructions</h3>
           <p class="text-xs text-zinc-400">Claude App is an IDE / desktop Harness that connects to AgentRouter through a third-party inference gateway.</p>
           
@@ -1031,39 +1031,9 @@ class Program {
       }
     }
 
-    const TAB_SLUGS = {
-      'opt1': 'direct-api',
-      'opt2': 'coding-agents',
-      'opt3': 'desktop-apps'
-    };
-
-    const SLUG_TO_OPT = {
-      'direct-api': 'opt1',
-      'direct-api-raw-http--curl': 'opt1',
-      'direct_api': 'opt1',
-      'directapi': 'opt1',
-      'coding-agents': 'opt2',
-      'coding-agent': 'opt2',
-      'coding_agents': 'opt2',
-      'codingagents': 'opt2',
-      'coding-agents--ides': 'opt2',
-      'desktop-apps': 'opt3',
-      'desktop-app': 'opt3',
-      'desktop_apps': 'opt3',
-      'desktopapps': 'opt3',
-      'desktop-applications': 'opt3',
-      'opt1': 'opt1',
-      'opt2': 'opt2',
-      'opt3': 'opt3'
-    };
-
-    function switchOption(opt, updateUrl = true) {
-      const targetOpt = SLUG_TO_OPT[opt] || opt;
-      const validOpt = ['opt1', 'opt2', 'opt3'].includes(targetOpt) ? targetOpt : 'opt1';
-
+    function switchOption(opt) {
       ['opt1', 'opt2', 'opt3'].forEach(o => {
-        const sec = document.getElementById('section-' + o);
-        if (sec) sec.classList.add('hidden');
+        document.getElementById('section-' + o).classList.add('hidden');
         
         const nav = document.getElementById('nav-' + o);
         if (nav) nav.classList.remove('active');
@@ -1074,86 +1044,19 @@ class Program {
         }
       });
 
-      const activeSec = document.getElementById('section-' + validOpt);
-      if (activeSec) activeSec.classList.remove('hidden');
+      document.getElementById('section-' + opt).classList.remove('hidden');
 
-      const activeNav = document.getElementById('nav-' + validOpt);
+      const activeNav = document.getElementById('nav-' + opt);
       if (activeNav) activeNav.classList.add('active');
 
-      const activeMNav = document.getElementById('m-nav-' + validOpt);
+      const activeMNav = document.getElementById('m-nav-' + opt);
       if (activeMNav) {
         activeMNav.className = 'py-2.5 px-3 whitespace-nowrap text-emerald-400 border-b-2 border-emerald-500 font-semibold';
       }
 
-      if (updateUrl) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('tab', TAB_SLUGS[validOpt] || validOpt);
-        url.hash = '';
-        window.history.replaceState(null, '', url.toString());
+      if (opt === 'opt2') {
+        highlightSidebar('card-cline');
       }
-    }
-
-    function scrollToCard(cardId, updateUrl = true) {
-      const target = document.getElementById(cardId);
-      if (!target) return;
-
-      const parentSection = target.closest('[id^="section-"]');
-      if (parentSection) {
-        const sectionOpt = parentSection.id.replace('section-', '');
-        switchOption(sectionOpt, false);
-      }
-
-      highlightSidebar(cardId);
-
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-          target.classList.remove('card-highlight');
-          void target.offsetWidth;
-          target.classList.add('card-highlight');
-        }, 60);
-      });
-
-      if (updateUrl) {
-        const url = new URL(window.location.href);
-        if (parentSection) {
-          const sectionOpt = parentSection.id.replace('section-', '');
-          url.searchParams.set('tab', TAB_SLUGS[sectionOpt] || sectionOpt);
-        }
-        url.hash = cardId;
-        window.history.replaceState(null, '', url.toString());
-      }
-    }
-
-    function highlightSidebar(cardId) {
-      document.querySelectorAll('.sidebar-link').forEach(link => {
-        const isMatch = link.getAttribute('data-target') === cardId;
-        link.classList.toggle('active', isMatch);
-      });
-    }
-
-    function handleInitialRouting() {
-      const params = new URLSearchParams(window.location.search);
-      const rawTab = params.get('tab') || params.get('option');
-      const hash = window.location.hash.replace('#', '');
-
-      let targetOpt = 'opt1';
-
-      if (rawTab) {
-        const normalized = decodeURIComponent(rawTab).toLowerCase().trim().replace(/[\s_]+/g, '-');
-        targetOpt = SLUG_TO_OPT[normalized] || SLUG_TO_OPT[rawTab] || 'opt1';
-      }
-
-      if (hash) {
-        const hashElem = document.getElementById(hash);
-        if (hashElem) {
-          scrollToCard(hash, false);
-          return;
-        }
-      }
-
-      switchOption(targetOpt, false);
     }
 
     async function runTest() {
@@ -1266,10 +1169,9 @@ ${bodyText || 'No description provided.'}
         el.classList.remove('opacity-100', 'translate-y-0');
         el.classList.add('opacity-0', 'translate-y-4');
       }, 2400);
-    window.addEventListener('popstate', handleInitialRouting);
-    window.addEventListener('hashchange', handleInitialRouting);
+    }
+
     renderAll();
-    handleInitialRouting();
   </script>
 </body>
 </html>
