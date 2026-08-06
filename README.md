@@ -76,6 +76,8 @@ curl -X POST https://agentrouter.org/v1/chat/completions \
 
 Each snippet installs cleanly and runs with a single command.
 
+### OpenAI-Compatible (`/v1/chat/completions`)
+
 | Language | File | Install | Run |
 |---|---|---|---|
 | cURL / Bash | [`snippets/curl/chat.sh`](snippets/curl/chat.sh) | *(none)* | `bash snippets/curl/chat.sh` |
@@ -85,6 +87,20 @@ Each snippet installs cleanly and runs with a single command.
 | Go | [`snippets/go/main.go`](snippets/go/main.go) | `go mod init app && go mod tidy` | `go run snippets/go/main.go` |
 | PHP | [`snippets/php/openai.php`](snippets/php/openai.php) | *(none — uses cURL extension)* | `php snippets/php/openai.php` |
 | C# (.NET) | [`snippets/csharp/Program.cs`](snippets/csharp/Program.cs) | *(none — uses System.Net.Http)* | `dotnet run --project snippets/csharp` |
+
+### Native Claude API (`/v1/messages`)
+
+Uses the Anthropic Messages format. Models default shown — switch between `claude-opus-5` and `claude-opus-4-8` via the comment in each file.
+
+| Language | File | Default Model | Install | Run |
+|---|---|---|---|---|
+| cURL / Bash | [`snippets/curl/claude.sh`](snippets/curl/claude.sh) | `claude-opus-5` | *(none)* | `bash snippets/curl/claude.sh` |
+| Node.js | [`snippets/node/claude.js`](snippets/node/claude.js) | `claude-opus-4-8` | `npm install @anthropic-ai/sdk` | `node snippets/node/claude.js` |
+| TypeScript | [`snippets/typescript/claude.ts`](snippets/typescript/claude.ts) | `claude-opus-5` | `npm install @anthropic-ai/sdk tsx` | `npx tsx snippets/typescript/claude.ts` |
+| Python | [`snippets/python/claude.py`](snippets/python/claude.py) | `claude-opus-4-8` | `pip install anthropic` | `python snippets/python/claude.py` |
+| Go | [`snippets/go/claude.go`](snippets/go/claude.go) | `claude-opus-5` | `go mod init app && go mod tidy` | `go run snippets/go/claude.go` |
+| PHP | [`snippets/php/claude.php`](snippets/php/claude.php) | `claude-opus-4-8` | *(none — uses cURL extension)* | `php snippets/php/claude.php` |
+| C# (.NET) | [`snippets/csharp/Claude.cs`](snippets/csharp/Claude.cs) | `claude-opus-5` | *(none — uses System.Net.Http)* | `dotnet run --project snippets/csharp` |
 
 ---
 
