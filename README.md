@@ -2,7 +2,7 @@
 
 Complete integration guide for AgentRouter — an unofficial OpenAI & Anthropic compatible API gateway.
 
-> 💡 **Interactive Dashboard**: Access the live interactive sandbox and guide at [`index.html`](index.html) (or [`dash/index.html`](dash/index.html) for deployment at `agentrouter.samkiel.dev`).
+> 💡 **Live Interactive Dashboard**: Access the live integration dashboard at [agentrouter.samkiel.dev](https://agentrouter.samkiel.dev) or open [`index.html`](index.html).
 
 ---
 
