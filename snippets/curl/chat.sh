@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Run: bash chat.sh
 
 if [ -z "$AGENTROUTER_API_KEY" ]; then
   echo "Error: AGENTROUTER_API_KEY environment variable is not set."
