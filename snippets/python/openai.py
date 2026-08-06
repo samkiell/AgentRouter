@@ -16,7 +16,7 @@ client = OpenAI(
 
 completion = client.chat.completions.create(
     model="gpt-5.6-sol",
-    messages=[{"role": "user", "content": "Hi, who are you?"}],
+    messages=[{"role": "user", "content": "Hi, I'm a vibecoder."}],
     max_tokens=256,
 )
 

@@ -17,7 +17,7 @@ curl -s -X POST https://agentrouter.org/v1/chat/completions \
     "messages": [
       {
         "role": "user",
-        "content": "Hi, who are you?"
+        "content": "Hi, I'm a vibecoder."
       }
     ],
     "max_tokens": 256

@@ -39,7 +39,7 @@ func main() {
 	reqBody := ChatRequest{
 		Model: "gpt-5.6-sol",
 		Messages: []Message{
-			{Role: "user", Content: "Hi, who are you?"},
+			{Role: "user", Content: "Hi, I'm a vibecoder."},
 		},
 		MaxTokens: 256,
 	}

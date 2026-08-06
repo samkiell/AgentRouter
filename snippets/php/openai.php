@@ -12,7 +12,7 @@ $ch = curl_init('https://agentrouter.org/v1/chat/completions');
 $data = [
     'model' => 'gpt-5.6-sol',
     'messages' => [
-        ['role' => 'user', 'content' => 'Hi, who are you?']
+        ['role' => 'user', 'content' => 'Hi, I'm a vibecoder.']
     ],
     'max_tokens' => 256
 ];

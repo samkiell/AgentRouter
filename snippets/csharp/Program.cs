@@ -24,7 +24,7 @@ class Program
             model = "gpt-5.6-sol",
             messages = new[]
             {
-                new { role = "user", content = "Hi, who are you?" }
+                new { role = "user", content = "Hi, I'm a vibecoder." }
             },
             max_tokens = 256
         };
