@@ -1,0 +1,39 @@
+{
+  "info": {
+    "name": "AgentRouter OpenAI Compatible",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List Models",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer YOUR_API_KEY" },
+          { "key": "Originator", "value": "codex_cli_rs" },
+          { "key": "Version", "value": "0.101.0" },
+          { "key": "User-Agent", "value": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" }
+        ],
+        "url": "https://agentrouter.org/v1/models"
+      }
+    },
+    {
+      "name": "Chat Completions (GPT)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer YOUR_API_KEY" },
+          { "key": "Originator", "value": "codex_cli_rs" },
+          { "key": "Version", "value": "0.101.0" },
+          { "key": "User-Agent", "value": "codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"model\": \"gpt-5.6-sol\",\n  \"messages\": [{\"role\": \"user\", \"content\": \"Hi\"}],\n  \"max_tokens\": 256\n}"
+        },
+        "url": "https://agentrouter.org/v1/chat/completions"
+      }
+    }
+  ]
+}
