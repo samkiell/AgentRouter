@@ -17,11 +17,20 @@ Use AgentRouter inside desktop AI applications (Claude Desktop, Cowork, Cursor, 
 
 ## 🖥️ Setup Guides
 
-### 1. Claude Desktop
-1. Open Claude Desktop settings (`Preferences` → `Developer / Custom Provider`).
-2. Set Base URL: `https://agentrouter.org`
-3. Enter API Key: `sk-your-api-key`
-4. Set Model ID: `claude-opus-4-8` or `claude-opus-5`
+### 1. Claude App (Desktop)
+Claude App is an IDE / desktop Harness that connects to AgentRouter through a third-party inference gateway.
+
+> ⚠️ **WARNING**: You need to enable developer mode before you can configure the gateway.
+
+**Installation and configuration steps:**
+1. **Enable developer mode**: `Help` → `Troubleshooting` → `Enable developer mode`.
+2. **Configure AgentRouter Gateway**:
+   | Configuration Item | Fill in the content |
+   |---|---|
+   | **Gateway base URL** | `https://agentrouter.org` |
+   | **Gateway API key** | The API Key you applied for at AgentRouter |
+   | **Gateway auth scheme** | `bearer` |
+3. **Apply and restart**: Click `Apply locally` → `Relaunch now`, and after restarting, select the model in the lower left corner to use it.
 
 ---
 

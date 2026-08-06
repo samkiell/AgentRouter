@@ -55,7 +55,24 @@ Open VS Code User Settings JSON (`Cmd/Ctrl+Shift+P` → `Open User Settings (JSO
 
 ---
 
-### 3. Cline (VS Code Extension)
+### 3. Claude App (Desktop)
+Claude App is an IDE / desktop Harness that connects to AgentRouter through a third-party inference gateway.
+
+> ⚠️ **WARNING**: You need to enable developer mode before you can configure the gateway.
+
+**Installation and configuration steps:**
+1. **Enable developer mode**: `Help` → `Troubleshooting` → `Enable developer mode`.
+2. **Configure AgentRouter Gateway**:
+   | Configuration Item | Fill in the content |
+   |---|---|
+   | **Gateway base URL** | `https://agentrouter.org` |
+   | **Gateway API key** | The API Key you applied for at AgentRouter |
+   | **Gateway auth scheme** | `bearer` |
+3. **Apply and restart**: Click `Apply locally` → `Relaunch now`, and after restarting, select the model in the lower left corner to use it.
+
+---
+
+### 4. Cline (VS Code Extension)
 In Cline extension settings panel:
 - **For Claude Models**:
   - API Provider: `Anthropic`

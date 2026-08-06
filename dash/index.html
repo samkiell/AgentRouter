@@ -27,6 +27,12 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+    .tool-badge { cursor: pointer; transition: all 0.15s; }
+    .tool-badge:hover { background: #27272a; border-color: #10b981; color: #fff; transform: translateY(-1px); }
+    .sidebar-link { transition: all 0.15s; border-left: 2px solid transparent; }
+    .sidebar-link.active { color: #10b981; background: rgba(16, 185, 129, 0.12); font-weight: 500; border-left-color: #10b981; }
+    @keyframes highlight-pulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); } 50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.15); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+    .card-highlight { animation: highlight-pulse 0.8s ease-out 2; border-color: #10b981 !important; }
   </style>
 </head>
 <body class="min-h-screen font-sans antialiased flex flex-col">
@@ -136,7 +142,7 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
           <div>
             <label class="block text-xs font-medium text-zinc-400 mb-1">Message</label>
             <textarea id="prompt" rows="2" oninput="renderAll()" class="input w-full rounded-lg px-3 py-2 text-sm text-white outline-none resize-none font-mono"
-                      placeholder="Hi">Hi</textarea>
+                      placeholder="Explain photosynthesis in two short sentences.">Explain photosynthesis in two short sentences.</textarea>
           </div>
 
           <button id="sendBtn" onclick="runTest()"
@@ -179,82 +185,236 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
     </div>
 
     <!-- CODING AGENTS (HIDDEN BY DEFAULT) -->
-    <div id="section-opt2" class="space-y-6 hidden">
-      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4">
+    <div id="section-opt2" class="hidden">
+      <!-- Header -->
+      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4 mb-6">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <div>
             <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">Coding Agents · Confirmed Working ✅</span>
             <h2 class="text-xl font-bold text-white mt-1.5">Coding Agents &amp; IDE Integration</h2>
           </div>
-          <a href="https://github.com/samkiell/AgentRouter/tree/main/coding-agents" target="_blank" rel="noopener"
+          <a href="https://agentrouter.org/docs" target="_blank" rel="noopener"
              class="btn text-xs px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200">
-            coding-agents/ on GitHub →
+            Official Docs →
           </a>
         </div>
-        <p class="text-sm text-zinc-300">Integrate AgentRouter directly into official coding tools and IDE extensions without WAF issues.</p>
-        
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-center">
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Claude Code</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cline</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cursor</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Roo Code</div>
+        <p class="text-sm text-zinc-300">Integrate AgentRouter directly into official coding tools and IDE extensions — no WAF spoofing needed.</p>
+        <!-- Endpoint Rule -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
+            <strong class="text-emerald-400 block mb-1">Claude / Anthropic Style</strong>
+            Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org</code> <span class="text-rose-400">(NO /v1)</span>
+          </div>
+          <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
+            <strong class="text-emerald-400 block mb-1">OpenAI Compatible Style</strong>
+            Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> <span class="text-zinc-500">(WITH /v1)</span>
+          </div>
         </div>
       </div>
 
-      <!-- Agent Setup Cards -->
-      <div class="space-y-4">
-        <!-- Claude Code CLI -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Code CLI</h3>
-          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
-            <li>Install: <code class="text-emerald-400 font-mono">npm install -g @anthropic-ai/claude-code</code></li>
-            <li>Set environment variables:
-              <pre class="mt-2 bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">export ANTHROPIC_BASE_URL=https://agentrouter.org
-export ANTHROPIC_AUTH_TOKEN=sk-your-api-key
-export ANTHROPIC_API_KEY=sk-your-api-key
-export ANTHROPIC_MODEL=claude-opus-4-8</pre>
-            </li>
-            <li>Run: <code class="text-emerald-400 font-mono">claude</code></li>
-          </ol>
-        </div>
+      <!-- Docs Layout: Sidebar + Content -->
+      <div class="flex flex-col lg:flex-row gap-6">
 
-        <!-- Claude Code VS Code -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Code (VS Code Extension)</h3>
-          <p class="text-xs text-zinc-400">Open VS Code User Settings JSON (<code class="text-zinc-300 font-mono">Cmd/Ctrl+Shift+P → Open User Settings (JSON)</code>) and add:</p>
-          <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">{
+        <!-- Sidebar Navigation -->
+        <nav class="lg:w-56 shrink-0">
+          <div class="lg:sticky lg:top-20 space-y-4">
+            <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">VS Code Plugins</p>
+            <div class="space-y-0.5">
+              <div data-target="card-cline" onclick="scrollToCard('card-cline')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Cline</div>
+              <div data-target="card-roo" onclick="scrollToCard('card-roo')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Roo Code</div>
+              <div data-target="card-kilo" onclick="scrollToCard('card-kilo')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Kilo Code</div>
+              <div data-target="card-claude-vscode" onclick="scrollToCard('card-claude-vscode')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Claude Code</div>
+              <div data-target="card-copilot" onclick="scrollToCard('card-copilot')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">GitHub Copilot</div>
+            </div>
+            <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider pt-2">CLI / Terminal</p>
+            <div class="space-y-0.5">
+              <div data-target="card-claude-cli" onclick="scrollToCard('card-claude-cli')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Claude Code CLI</div>
+              <div data-target="card-cli-codex" onclick="scrollToCard('card-cli-codex')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Codex CLI</div>
+              <div data-target="card-cli-qwen" onclick="scrollToCard('card-cli-qwen')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Qwen Code</div>
+              <div data-target="card-cli-opencode" onclick="scrollToCard('card-cli-opencode')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">OpenCode</div>
+              <div data-target="card-cli-hermes" onclick="scrollToCard('card-cli-hermes')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Hermes Agent</div>
+            </div>
+            <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider pt-2">IDE / Desktop</p>
+            <div class="space-y-0.5">
+              <div data-target="card-claude-app" onclick="scrollToCard('card-claude-app')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Claude App</div>
+              <div data-target="card-trae" onclick="scrollToCard('card-trae')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Trae</div>
+              <div data-target="card-cursor" onclick="scrollToCard('card-cursor')" class="sidebar-link px-3 py-1.5 rounded-md text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 cursor-pointer">Cursor</div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Content Cards -->
+        <div class="flex-1 space-y-4 min-w-0">
+
+          <!-- VS CODE PLUGINS -->
+          <!-- Cline -->
+          <div id="card-cline" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Cline Extension</h3>
+            <ul class="space-y-2 text-xs text-zinc-300">
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>Claude Models:</strong> API Provider = <code class="text-emerald-400 font-mono">Anthropic</code> · Custom Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> <span class="text-rose-400">(NO /v1)</span> · Model = <code class="text-zinc-200 font-mono">claude-opus-4-6</code>
+              </li>
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>GPT Models:</strong> API Provider = <code class="text-emerald-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Roo Code -->
+          <div id="card-roo" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Roo Code</h3>
+            <p class="text-xs text-zinc-400">Create a Custom Provider profile and set:</p>
+            <ul class="space-y-2 text-xs text-zinc-300">
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>For Claude:</strong> Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> <span class="text-rose-400">(NO /v1)</span> · API Key = your AgentRouter key
+              </li>
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>For GPT:</strong> OpenAI Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> · API Key = your AgentRouter key
+              </li>
+            </ul>
+          </div>
+
+          <!-- Kilo Code -->
+          <div id="card-kilo" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Kilo Code</h3>
+            <p class="text-xs text-zinc-400">Create a Custom Provider profile and set:</p>
+            <ul class="space-y-2 text-xs text-zinc-300">
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>For Claude:</strong> Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> <span class="text-rose-400">(NO /v1)</span> · API Key = your AgentRouter key
+              </li>
+              <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>For GPT:</strong> OpenAI Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> · API Key = your AgentRouter key
+              </li>
+            </ul>
+          </div>
+
+          <!-- Claude Code (VS Code Extension) -->
+          <div id="card-claude-vscode" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Claude Code (VS Code Extension)</h3>
+            <p class="text-xs text-zinc-400">Open VS Code User Settings JSON (<code class="text-zinc-300 font-mono">Cmd/Ctrl+Shift+P → Open User Settings (JSON)</code>) and add:</p>
+            <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">{
   "claudeCode.environmentVariables": [
-    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "sk-your-api-key" },
+    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "your-agentrouter-api-key" },
     { "name": "ANTHROPIC_BASE_URL", "value": "https://agentrouter.org" },
-    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-8" }
+    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-6" }
   ],
   "claudeCode.disableLoginPrompt": true
 }</pre>
-        </div>
-
-        <!-- Cline -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Cline Extension</h3>
-          <ul class="space-y-2 text-xs text-zinc-300">
-            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
-              <strong>Claude Models:</strong> API Provider = <code class="text-emerald-400 font-mono">Anthropic</code> · Custom Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1) · Model = <code class="text-zinc-200 font-mono">claude-opus-4-8</code>
-            </li>
-            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
-              <strong>GPT Models:</strong> API Provider = <code class="text-emerald-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Cursor & Roo -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="card rounded-xl p-5 space-y-2">
-            <h3 class="text-base font-semibold text-white">Cursor IDE</h3>
-            <p class="text-xs text-zinc-400">Settings → Models → OpenAI API Key. Enable "Override OpenAI Base URL" and set to <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
           </div>
-          <div class="card rounded-xl p-5 space-y-2">
-            <h3 class="text-base font-semibold text-white">Roo Code / Kilo Code</h3>
-            <p class="text-xs text-zinc-400">Custom Provider profile: Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> or OpenAI Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
+
+          <!-- GitHub Copilot -->
+          <div id="card-copilot" class="card rounded-xl p-5 space-y-2">
+            <h3 class="text-base font-semibold text-white">GitHub Copilot</h3>
+            <p class="text-xs text-zinc-400">Copilot supports custom model endpoints. Set AgentRouter as the provider using OpenAI-compatible base URL <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> with your API key.</p>
           </div>
+
+          <!-- CLI / TERMINAL -->
+          <!-- Claude Code CLI -->
+          <div id="card-claude-cli" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Claude Code CLI</h3>
+            <p class="text-xs text-zinc-400">Uses Anthropic-compatible config. Base URL does <strong class="text-rose-400">NOT</strong> include <code class="font-mono text-rose-400">/v1</code>. Do not mix with OpenAI endpoints.</p>
+            <ol class="list-decimal list-inside space-y-3 text-xs text-zinc-300">
+              <li>Requires <strong>Node.js 18+</strong>. Check: <code class="text-emerald-400 font-mono">node --version</code></li>
+              <li>Install: <code class="text-emerald-400 font-mono">npm install -g @anthropic-ai/claude-code@latest</code></li>
+              <li>Verify: <code class="text-emerald-400 font-mono">claude --version</code></li>
+              <li>Set environment variables:
+                <div class="mt-2 space-y-2">
+                  <p class="text-[11px] font-medium text-zinc-500">macOS / Linux</p>
+                  <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">export ANTHROPIC_AUTH_TOKEN="your-agentrouter-api-key"
+export ANTHROPIC_BASE_URL="https://agentrouter.org"
+export ANTHROPIC_MODEL="claude-opus-4-6"</pre>
+                  <p class="text-[11px] font-medium text-zinc-500">Windows PowerShell</p>
+                  <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">$env:ANTHROPIC_AUTH_TOKEN="your-agentrouter-api-key"
+$env:ANTHROPIC_BASE_URL="https://agentrouter.org"
+$env:ANTHROPIC_MODEL="claude-opus-4-6"</pre>
+                </div>
+              </li>
+              <li>Run: <code class="text-emerald-400 font-mono">claude</code></li>
+            </ol>
+            <div class="p-3 rounded bg-zinc-950 border-l-2 border-amber-500 text-xs text-zinc-300">
+              <strong class="text-amber-400">⚠ Note:</strong> If you previously logged into Claude Pro/Max/Team, the env vars override your subscription login. To restore subscription, <code class="font-mono text-zinc-400">unset ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL ANTHROPIC_MODEL</code> and restart <code class="font-mono text-zinc-400">claude</code>.
+            </div>
+            <div class="text-xs text-zinc-400">
+              Available models: <code class="font-mono text-zinc-300">claude-opus-4-6</code> (default) · <code class="font-mono text-zinc-300">claude-opus-4-7</code> · <code class="font-mono text-zinc-300">claude-opus-4-8</code>
+            </div>
+          </div>
+
+          <!-- Other CLI Tools -->
+          <div id="card-cli-tools" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Other CLI Tools</h3>
+            <p class="text-xs text-zinc-400">These CLI agents support custom endpoints via environment variables:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-300">
+              <div id="card-cli-codex" class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>Codex CLI:</strong> Set <code class="font-mono text-emerald-400">OPENAI_BASE_URL=https://agentrouter.org/v1</code>
+              </div>
+              <div id="card-cli-qwen" class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>Qwen Code:</strong> Set base URL to <code class="font-mono text-emerald-400">https://agentrouter.org/v1</code>
+              </div>
+              <div id="card-cli-opencode" class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>OpenCode:</strong> Set base URL to <code class="font-mono text-emerald-400">https://agentrouter.org/v1</code>
+              </div>
+              <div id="card-cli-hermes" class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+                <strong>Hermes Agent:</strong> Set base URL to <code class="font-mono text-emerald-400">https://agentrouter.org/v1</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- IDE / DESKTOP -->
+          <!-- Claude App (Desktop) -->
+          <div id="card-claude-app" class="card rounded-xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-white">Claude App (Desktop)</h3>
+            <p class="text-xs text-zinc-400">Claude App is an IDE / desktop Harness that connects to AgentRouter through a third-party inference gateway.</p>
+
+            <div class="p-3 rounded bg-amber-950/40 border-l-2 border-amber-500 text-xs text-amber-200/90">
+              <strong class="text-amber-400 font-medium">⚠️ WARNING:</strong> You need to enable developer mode before you can configure the gateway.
+            </div>
+
+            <h4 class="text-xs font-semibold text-zinc-200 pt-1">Installation and configuration steps</h4>
+            <ol class="list-decimal list-inside space-y-2.5 text-xs text-zinc-300">
+              <li><strong>Enable developer mode:</strong> <code class="text-zinc-200 font-mono bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">Help → Troubleshooting → Enable developer mode</code></li>
+              <li>
+                <strong>Configure AgentRouter Gateway:</strong>
+                <div class="mt-2 overflow-x-auto">
+                  <table class="w-full text-left text-xs border-collapse border border-zinc-800 rounded">
+                    <thead>
+                      <tr class="bg-zinc-950 text-zinc-300 border-b border-zinc-800">
+                        <th class="py-2 px-3 font-semibold border-r border-zinc-800">Configuration Item</th>
+                        <th class="py-2 px-3 font-semibold">Fill in the content</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-800 text-zinc-300">
+                      <tr>
+                        <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway base URL</td>
+                        <td class="py-2 px-3"><code class="text-emerald-400 font-mono">https://agentrouter.org</code></td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway API key</td>
+                        <td class="py-2 px-3 text-zinc-300">The API Key you applied for at AgentRouter</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway auth scheme</td>
+                        <td class="py-2 px-3"><code class="text-emerald-400 font-mono">bearer</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+              <li><strong>Apply and restart:</strong> Click <code class="text-zinc-200 font-mono bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">Apply locally → Relaunch now</code>, and after restarting, select the model in the lower left corner to use it.</li>
+            </ol>
+          </div>
+
+          <!-- Cursor & Trae -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div id="card-trae" class="card rounded-xl p-5 space-y-2">
+              <h3 class="text-base font-semibold text-white">Trae IDE</h3>
+              <p class="text-xs text-zinc-400">Set custom provider endpoint to <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (Anthropic) or <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code> (OpenAI).</p>
+            </div>
+            <div id="card-cursor" class="card rounded-xl p-5 space-y-2">
+              <h3 class="text-base font-semibold text-white">Cursor IDE</h3>
+              <p class="text-xs text-zinc-400">Settings → Models → OpenAI API Key. Enable "Override OpenAI Base URL" and set to <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -291,13 +451,44 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
         </div>
 
         <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Desktop Instructions</h3>
-          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
-            <li>Open Claude Desktop settings.</li>
-            <li>Locate Custom Provider / Custom Endpoint fields.</li>
-            <li>Set Base URL to <code class="text-emerald-400 font-mono">https://agentrouter.org</code></li>
-            <li>Paste your AgentRouter API key.</li>
-            <li>Select model: <code class="font-mono text-zinc-200">claude-opus-4-8</code> or <code class="font-mono text-zinc-200">claude-opus-5</code>.</li>
+          <h3 class="text-base font-semibold text-white">Claude App (Desktop) Instructions</h3>
+          <p class="text-xs text-zinc-400">Claude App is an IDE / desktop Harness that connects to AgentRouter through a third-party inference gateway.</p>
+          
+          <div class="p-3 rounded bg-amber-950/40 border-l-2 border-amber-500 text-xs text-amber-200/90">
+            <strong class="text-amber-400 font-medium">⚠️ WARNING:</strong> You need to enable developer mode before you can configure the gateway.
+          </div>
+
+          <h4 class="text-xs font-semibold text-zinc-200 pt-1">Installation and configuration steps</h4>
+          <ol class="list-decimal list-inside space-y-2.5 text-xs text-zinc-300">
+            <li><strong>Enable developer mode:</strong> <code class="text-zinc-200 font-mono bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">Help → Troubleshooting → Enable developer mode</code></li>
+            <li>
+              <strong>Configure AgentRouter Gateway:</strong>
+              <div class="mt-2 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse border border-zinc-800 rounded">
+                  <thead>
+                    <tr class="bg-zinc-950 text-zinc-300 border-b border-zinc-800">
+                      <th class="py-2 px-3 font-semibold border-r border-zinc-800">Configuration Item</th>
+                      <th class="py-2 px-3 font-semibold">Fill in the content</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-zinc-800 text-zinc-300">
+                    <tr>
+                      <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway base URL</td>
+                      <td class="py-2 px-3"><code class="text-emerald-400 font-mono">https://agentrouter.org</code></td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway API key</td>
+                      <td class="py-2 px-3 text-zinc-300">The API Key you applied for at AgentRouter</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3 font-mono text-zinc-400 border-r border-zinc-800">Gateway auth scheme</td>
+                      <td class="py-2 px-3"><code class="text-emerald-400 font-mono">bearer</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+            <li><strong>Apply and restart:</strong> Click <code class="text-zinc-200 font-mono bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">Apply locally → Relaunch now</code>, and after restarting, select the model in the lower left corner to use it.</li>
           </ol>
         </div>
       </div>
@@ -348,6 +539,39 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
   <div id="toast" class="fixed bottom-5 right-5 px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white text-xs font-medium shadow-2xl transition-all duration-300 opacity-0 translate-y-4 pointer-events-none z-50"></div>
 
   <script>
+    function highlightSidebar(targetId) {
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.getAttribute('data-target') === targetId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    function scrollToCard(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      highlightSidebar(id);
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.remove('card-highlight');
+      void el.offsetWidth; // force reflow to restart animation
+      el.classList.add('card-highlight');
+      setTimeout(() => el.classList.remove('card-highlight'), 2000);
+    }
+
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          highlightSidebar(entry.target.id);
+        }
+      });
+    }, { root: null, rootMargin: '-20% 0px -50% 0px', threshold: 0.1 });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('#section-opt2 [id^="card-"]').forEach(card => cardObserver.observe(card));
+    });
+
     let activeSnipLang = 'typescript';
 
     const getKey = (k, envExpr) => k ? `"${k}"` : envExpr;
@@ -865,6 +1089,10 @@ class Program {
       const activeMNav = document.getElementById('m-nav-' + opt);
       if (activeMNav) {
         activeMNav.className = 'py-2.5 px-3 whitespace-nowrap text-emerald-400 border-b-2 border-emerald-500 font-semibold';
+      }
+
+      if (opt === 'opt2') {
+        highlightSidebar('card-cline');
       }
     }
 
