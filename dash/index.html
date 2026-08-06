@@ -843,21 +843,17 @@ class Program {
     }
 
     async function runSandboxRequest() {
-      const key = document.getElementById('sbKey').value.trim();
-      const opt = document.getElementById('sbModel').selectedOptions[0];
-      const model = opt.value;
-      const mode = opt.dataset.mode;
-      const prompt = document.getElementById('sbPrompt').value.trim() || 'Hi';
+      const key = document.getElementById('sbKey')?.value.trim();
+      if (!key) {
+        showToast('Paste your API key first');
+        document.getElementById('sbKey')?.focus();
+        return;
+      }
+
       const btn = document.getElementById('sendBtn');
-      const result = document.getElementById('sbResult');
       const output = document.getElementById('sbOutput');
       const statusBadge = document.getElementById('statusBadge');
       const timeBadge = document.getElementById('timeBadge');
-
-      if (!key) {
-        showToast('Paste your API key first');
-        return;
-      }
 
       btn.disabled = true;
       btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Sending...</span>`;
@@ -867,27 +863,32 @@ class Program {
       statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold';
       timeBadge.textContent = '';
 
-      const t0 = Date.now();
-      const headers = {
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Originator': 'codex_cli_rs',
-        'Version': '0.101.0',
-        'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
-      };
-
-      let url, body;
-      if (mode === 'claude') {
-        url = 'https://agentrouter.org/v1/messages';
-        headers['x-api-key'] = key;
-        headers['anthropic-version'] = '2023-06-01';
-        body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
-      } else {
-        url = 'https://agentrouter.org/v1/chat/completions';
-        body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
-      }
-
       try {
+        const modelSelect = document.getElementById('sbModel');
+        const opt = modelSelect ? modelSelect.selectedOptions[0] : null;
+        const model = opt ? opt.value : 'gpt-5.6-sol';
+        const mode = opt ? opt.dataset.mode : 'openai';
+        const prompt = document.getElementById('sbPrompt').value.trim() || 'Hi';
+        const t0 = Date.now();
+        const headers = {
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Originator': 'codex_cli_rs',
+          'Version': '0.101.0',
+          'User-Agent': 'codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464'
+        };
+
+        let url, body;
+        if (mode === 'claude') {
+          url = 'https://agentrouter.org/v1/messages';
+          headers['x-api-key'] = key;
+          headers['anthropic-version'] = '2023-06-01';
+          body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
+        } else {
+          url = 'https://agentrouter.org/v1/chat/completions';
+          body = { model, max_tokens: 256, messages: [{ role: 'user', content: prompt }] };
+        }
+
         const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
         const ms = Date.now() - t0;
         const data = await res.json();
@@ -902,17 +903,15 @@ class Program {
         }
         timeBadge.textContent = `${ms}ms`;
       } catch (err) {
-        const ms = Date.now() - t0;
         if (/Failed to fetch|NetworkError|CORS/.test(err.message)) {
           output.textContent = "Error: Browser fetch blocked by CORS / Network policy.\n\nThe required WAF headers cannot be sent directly from browser JS due to browser security restrictions.\n\nUse the generated cURL command below in your terminal — it bypasses this restriction completely.";
           statusBadge.textContent = 'CORS Block';
-          statusBadge.classList.add('bg-amber-950', 'text-amber-400', 'border', 'border-amber-800');
+          statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-amber-950 text-amber-400 border border-amber-800';
         } else {
           output.textContent = 'Error: ' + err.message;
           statusBadge.textContent = 'Network Error';
-          statusBadge.classList.add('bg-rose-950', 'text-rose-400', 'border', 'border-rose-800');
+          statusBadge.className = 'px-2 py-0.5 rounded text-xs font-semibold bg-rose-950 text-rose-400 border border-rose-800';
         }
-        timeBadge.textContent = `${ms}ms`;
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<span>Send</span>`;
