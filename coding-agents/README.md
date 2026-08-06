@@ -1,16 +1,27 @@
-# Option 2: Coding Agents & IDE Integration
+# ✅ Option 2: Coding Agents & IDE Integration
 
-Integrate AgentRouter directly into official coding agents, developer CLI tools, and IDE extensions. **Confirmed Working ✅**
+> **Status**: Confirmed Working ✅
 
-## Supported Tools & Setup Guide
+Integrate AgentRouter directly into official AI coding tools, CLI agents, and IDE extensions.
+
+---
+
+## 📌 Golden Rule: Base URL Format
+
+- **Claude / Anthropic Models**: Base URL **MUST NOT** include `/v1` (`https://agentrouter.org`).
+- **GPT / OpenAI Models**: Base URL **MUST** include `/v1` (`https://agentrouter.org/v1`).
+
+---
+
+## 🛠️ Step-by-Step Tool Setup Guides
 
 ### 1. Claude Code CLI
-Install the official package:
+Install the official Claude Code CLI:
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-Set environment variables:
+Set environment variables before running:
 - **macOS / Linux**:
   ```bash
   export ANTHROPIC_BASE_URL="https://agentrouter.org"
@@ -45,29 +56,31 @@ Open VS Code User Settings JSON (`Cmd/Ctrl+Shift+P` → `Open User Settings (JSO
 ---
 
 ### 3. Cline (VS Code Extension)
-In Cline extension settings:
+In Cline extension settings panel:
 - **For Claude Models**:
-  - API Provider = `Anthropic`
-  - Base URL = `https://agentrouter.org` (NO `/v1`)
-  - API Key = `sk-your-api-key`
-  - Model = `claude-opus-4-8` or `claude-opus-5`
+  - API Provider: `Anthropic`
+  - Use custom base URL: `Checked`
+  - Base URL: `https://agentrouter.org` (NO `/v1`)
+  - API Key: `sk-your-api-key`
+  - Model: `claude-opus-4-8`
 - **For GPT Models**:
-  - API Provider = `OpenAI Compatible`
-  - Base URL = `https://agentrouter.org/v1`
-  - API Key = `sk-your-api-key`
-  - Model = `gpt-5.6-sol`
+  - API Provider: `OpenAI Compatible`
+  - Base URL: `https://agentrouter.org/v1`
+  - API Key: `sk-your-api-key`
+  - Model: `gpt-5.6-sol`
 
 ---
 
 ### 4. Cursor IDE
-1. Open Settings → Models.
-2. Paste your AgentRouter key under OpenAI API Key.
-3. Enable "Override OpenAI Base URL".
+1. Open Cursor Settings (`Cmd/Ctrl + ,`) → **Models**.
+2. Paste your AgentRouter key under **OpenAI API Key**.
+3. Toggle on **Override OpenAI Base URL**.
 4. Set Base URL to `https://agentrouter.org/v1`.
+5. Select `gpt-5.6-sol` or `claude-opus-4-8`.
 
 ---
 
 ### 5. Roo Code / Kilo Code
-Create a custom provider profile:
-- **Anthropic Base URL**: `https://agentrouter.org` (NO `/v1`)
-- **OpenAI Base URL**: `https://agentrouter.org/v1`
+Add a new Provider Profile in extension settings:
+- **Claude Models**: Provider = `Anthropic`, Base URL = `https://agentrouter.org`
+- **GPT Models**: Provider = `OpenAI Compatible`, Base URL = `https://agentrouter.org/v1`
