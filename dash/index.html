@@ -39,16 +39,16 @@
         AgentRouter Integration
       </a>
       
-      <!-- Highlighted 3 Options Nav Switcher -->
+      <!-- 3 Integration Methods Nav Switcher (No Opt prefix, Direct API first) -->
       <nav class="hidden md:flex items-center gap-1 text-xs sm:text-sm font-medium">
-        <button onclick="switchOption('opt2')" id="nav-opt2" class="nav-tab px-3.5 py-2 rounded-t-lg text-zinc-400 hover:text-zinc-200 active">
-          Option 2: Coding Agents <span class="text-emerald-400 ml-1">✅</span>
+        <button onclick="switchOption('opt1')" id="nav-opt1" class="nav-tab px-3.5 py-2 rounded-t-lg text-zinc-400 hover:text-zinc-200 active">
+          Direct API <span class="text-rose-400 ml-1">❌</span>
+        </button>
+        <button onclick="switchOption('opt2')" id="nav-opt2" class="nav-tab px-3.5 py-2 rounded-t-lg text-zinc-400 hover:text-zinc-200">
+          Coding Agents <span class="text-emerald-400 ml-1">✅</span>
         </button>
         <button onclick="switchOption('opt3')" id="nav-opt3" class="nav-tab px-3.5 py-2 rounded-t-lg text-zinc-400 hover:text-zinc-200">
-          Option 3: Desktop Apps <span class="text-emerald-400 ml-1">✅</span>
-        </button>
-        <button onclick="switchOption('opt1')" id="nav-opt1" class="nav-tab px-3.5 py-2 rounded-t-lg text-zinc-400 hover:text-zinc-200">
-          Option 1: Direct API <span class="text-rose-400 ml-1">❌</span>
+          Desktop Apps <span class="text-emerald-400 ml-1">✅</span>
         </button>
       </nav>
 
@@ -61,16 +61,16 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Switcher -->
+    <!-- Mobile Navigation Switcher (Direct API first) -->
     <div class="md:hidden flex border-t border-zinc-800/80 bg-zinc-900/60 overflow-x-auto text-xs font-medium px-4">
-      <button onclick="switchOption('opt2')" id="m-nav-opt2" class="py-2.5 px-3 whitespace-nowrap text-indigo-400 border-b-2 border-indigo-500 font-semibold">
-        Opt 2: Coding Agents ✅
+      <button onclick="switchOption('opt1')" id="m-nav-opt1" class="py-2.5 px-3 whitespace-nowrap text-indigo-400 border-b-2 border-indigo-500 font-semibold">
+        Direct API ❌
+      </button>
+      <button onclick="switchOption('opt2')" id="m-nav-opt2" class="py-2.5 px-3 whitespace-nowrap text-zinc-400">
+        Coding Agents ✅
       </button>
       <button onclick="switchOption('opt3')" id="m-nav-opt3" class="py-2.5 px-3 whitespace-nowrap text-zinc-400">
-        Opt 3: Desktop Apps ✅
-      </button>
-      <button onclick="switchOption('opt1')" id="m-nav-opt1" class="py-2.5 px-3 whitespace-nowrap text-zinc-400">
-        Opt 1: Direct API ❌
+        Desktop Apps ✅
       </button>
     </div>
   </header>
@@ -79,146 +79,21 @@
   <div class="border-b border-zinc-800/60 py-10 text-center bg-gradient-to-b from-zinc-900/40 to-transparent">
     <div class="max-w-3xl mx-auto px-6">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono mb-4">
-        <span>agentrouter.samkiel.dev</span>
+        <span>agentrouter.samkiel.online</span>
       </div>
       <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">AgentRouter Integration Dashboard</h1>
-      <p class="mt-3 text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">Explore 3 integration methods: Coding Agents &amp; IDEs (Confirmed Working), Desktop Apps (Confirmed Working), and Direct API WAF restrictions.</p>
+      <p class="mt-3 text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">Interactive guide &amp; testing suite for Direct API, Coding Agents &amp; IDEs, and Desktop Applications.</p>
     </div>
   </div>
 
   <main class="max-w-4xl mx-auto px-6 py-8 space-y-8 flex-1 w-full">
 
-    <!-- OPTION 2: Coding Agents & IDEs (DEFAULT SHOW) -->
-    <div id="section-opt2" class="space-y-6">
-      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">Option 2 · Confirmed Working ✅</span>
-            <h2 class="text-xl font-bold text-white mt-1.5">Coding Agents &amp; IDE Integration</h2>
-          </div>
-          <a href="https://github.com/samkiell/AgentRouter/tree/main/coding-agents" target="_blank" rel="noopener"
-             class="btn text-xs px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200">
-            coding-agents/ on GitHub →
-          </a>
-        </div>
-        <p class="text-sm text-zinc-300">Integrate AgentRouter directly into official coding tools and IDE extensions without WAF issues.</p>
-        
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-center">
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Claude Code</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cline</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cursor</div>
-          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Roo Code</div>
-        </div>
-      </div>
-
-      <!-- Agent Setup Cards -->
-      <div class="space-y-4">
-        <!-- Claude Code CLI -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Code CLI</h3>
-          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
-            <li>Install: <code class="text-emerald-400 font-mono">npm install -g @anthropic-ai/claude-code</code></li>
-            <li>Set environment variables:
-              <pre class="mt-2 bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">export ANTHROPIC_BASE_URL=https://agentrouter.org
-export ANTHROPIC_AUTH_TOKEN=sk-your-api-key
-export ANTHROPIC_API_KEY=sk-your-api-key
-export ANTHROPIC_MODEL=claude-opus-4-8</pre>
-            </li>
-            <li>Run: <code class="text-emerald-400 font-mono">claude</code></li>
-          </ol>
-        </div>
-
-        <!-- Claude Code VS Code -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Code (VS Code Extension)</h3>
-          <p class="text-xs text-zinc-400">Open VS Code User Settings JSON (<code class="text-zinc-300 font-mono">Cmd/Ctrl+Shift+P → Open User Settings (JSON)</code>) and add:</p>
-          <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">{
-  "claudeCode.environmentVariables": [
-    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "sk-your-api-key" },
-    { "name": "ANTHROPIC_BASE_URL", "value": "https://agentrouter.org" },
-    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-8" }
-  ],
-  "claudeCode.disableLoginPrompt": true
-}</pre>
-        </div>
-
-        <!-- Cline -->
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Cline Extension</h3>
-          <ul class="space-y-2 text-xs text-zinc-300">
-            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
-              <strong>Claude Models:</strong> API Provider = <code class="text-emerald-400 font-mono">Anthropic</code> · Custom Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1) · Model = <code class="text-zinc-200 font-mono">claude-opus-4-8</code>
-            </li>
-            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-indigo-500">
-              <strong>GPT Models:</strong> API Provider = <code class="text-indigo-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Cursor & Roo -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="card rounded-xl p-5 space-y-2">
-            <h3 class="text-base font-semibold text-white">Cursor IDE</h3>
-            <p class="text-xs text-zinc-400">Settings → Models → OpenAI API Key. Enable "Override OpenAI Base URL" and set to <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
-          </div>
-          <div class="card rounded-xl p-5 space-y-2">
-            <h3 class="text-base font-semibold text-white">Roo Code / Kilo Code</h3>
-            <p class="text-xs text-zinc-400">Custom Provider profile: Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> or OpenAI Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code>.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- OPTION 3: Desktop Apps (HIDDEN BY DEFAULT) -->
-    <div id="section-opt3" class="space-y-6 hidden">
-      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">Option 3 · Confirmed Working ✅</span>
-            <h2 class="text-xl font-bold text-white mt-1.5">Desktop Applications Integration</h2>
-          </div>
-          <a href="https://github.com/samkiell/AgentRouter/tree/main/desktop-apps" target="_blank" rel="noopener"
-             class="btn text-xs px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200">
-            desktop-apps/ on GitHub →
-          </a>
-        </div>
-        <p class="text-sm text-zinc-300">Use AgentRouter inside Claude Desktop, Cowork, Cursor, or any desktop AI application supporting custom API endpoints.</p>
-      </div>
-
-      <div class="space-y-4">
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">General Endpoint Rule</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
-              <strong class="text-emerald-400 block mb-1">Claude / Anthropic Style</strong>
-              Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1)
-            </div>
-            <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
-              <strong class="text-indigo-400 block mb-1">OpenAI Style</strong>
-              Base URL: <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> (WITH /v1)
-            </div>
-          </div>
-        </div>
-
-        <div class="card rounded-xl p-5 space-y-3">
-          <h3 class="text-base font-semibold text-white">Claude Desktop Instructions</h3>
-          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
-            <li>Open Claude Desktop settings.</li>
-            <li>Locate Custom Provider / Custom Endpoint fields.</li>
-            <li>Set Base URL to <code class="text-emerald-400 font-mono">https://agentrouter.org</code></li>
-            <li>Paste your AgentRouter API key.</li>
-            <li>Select model: <code class="font-mono text-zinc-200">claude-opus-4-8</code> or <code class="font-mono text-zinc-200">claude-opus-5</code>.</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-
-    <!-- OPTION 1: Direct API (HIDDEN BY DEFAULT) -->
-    <div id="section-opt1" class="space-y-6 hidden">
+    <!-- DIRECT API (SHOW FIRST) -->
+    <div id="section-opt1" class="space-y-6">
       <div class="card rounded-xl p-6 border-rose-500/30 bg-rose-950/10 space-y-4">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-xs font-mono font-semibold">Option 1 · Confirmed Not Supported / Blocked ❌</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-xs font-mono font-semibold">Direct API · Blocked / Requires Spoofing ❌</span>
             <h2 class="text-xl font-bold text-white mt-1.5">Direct API (Raw HTTP / cURL)</h2>
           </div>
           <a href="https://github.com/samkiell/AgentRouter/tree/main/direct-api" target="_blank" rel="noopener"
@@ -226,7 +101,7 @@ export ANTHROPIC_MODEL=claude-opus-4-8</pre>
             direct-api/ on GitHub →
           </a>
         </div>
-        <p class="text-sm text-zinc-300">Directly calling AgentRouter base URL in custom code via raw HTTP/cURL is <strong>blocked by Cloudflare WAF design</strong>. Use Option 2 or Option 3 instead.</p>
+        <p class="text-sm text-zinc-300">Directly calling AgentRouter base URL in custom code via raw HTTP/cURL is <strong>blocked by Cloudflare WAF design</strong> without spoofing headers.</p>
       </div>
 
       <!-- WAF Explanation & Tester -->
@@ -306,7 +181,131 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
           <pre id="snippetBlock" class="input rounded-lg p-4 text-xs font-mono text-zinc-200 overflow-x-auto max-h-96"></pre>
         </div>
       </div>
+    </div>
 
+    <!-- CODING AGENTS (HIDDEN BY DEFAULT) -->
+    <div id="section-opt2" class="space-y-6 hidden">
+      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">Coding Agents · Confirmed Working ✅</span>
+            <h2 class="text-xl font-bold text-white mt-1.5">Coding Agents &amp; IDE Integration</h2>
+          </div>
+          <a href="https://github.com/samkiell/AgentRouter/tree/main/coding-agents" target="_blank" rel="noopener"
+             class="btn text-xs px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200">
+            coding-agents/ on GitHub →
+          </a>
+        </div>
+        <p class="text-sm text-zinc-300">Integrate AgentRouter directly into official coding tools and IDE extensions without WAF issues.</p>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-center">
+          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Claude Code</div>
+          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cline</div>
+          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Cursor</div>
+          <div class="p-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200">Roo Code</div>
+        </div>
+      </div>
+
+      <!-- Agent Setup Cards -->
+      <div class="space-y-4">
+        <!-- Claude Code CLI -->
+        <div class="card rounded-xl p-5 space-y-3">
+          <h3 class="text-base font-semibold text-white">Claude Code CLI</h3>
+          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
+            <li>Install: <code class="text-emerald-400 font-mono">npm install -g @anthropic-ai/claude-code</code></li>
+            <li>Set environment variables:
+              <pre class="mt-2 bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">export ANTHROPIC_BASE_URL=https://agentrouter.org
+export ANTHROPIC_AUTH_TOKEN=sk-your-api-key
+export ANTHROPIC_API_KEY=sk-your-api-key
+export ANTHROPIC_MODEL=claude-opus-4-8</pre>
+            </li>
+            <li>Run: <code class="text-emerald-400 font-mono">claude</code></li>
+          </ol>
+        </div>
+
+        <!-- Claude Code VS Code -->
+        <div class="card rounded-xl p-5 space-y-3">
+          <h3 class="text-base font-semibold text-white">Claude Code (VS Code Extension)</h3>
+          <p class="text-xs text-zinc-400">Open VS Code User Settings JSON (<code class="text-zinc-300 font-mono">Cmd/Ctrl+Shift+P → Open User Settings (JSON)</code>) and add:</p>
+          <pre class="bg-zinc-950 p-3 rounded text-xs font-mono text-emerald-300 overflow-x-auto">{
+  "claudeCode.environmentVariables": [
+    { "name": "ANTHROPIC_AUTH_TOKEN", "value": "sk-your-api-key" },
+    { "name": "ANTHROPIC_BASE_URL", "value": "https://agentrouter.org" },
+    { "name": "ANTHROPIC_MODEL", "value": "claude-opus-4-8" }
+  ],
+  "claudeCode.disableLoginPrompt": true
+}</pre>
+        </div>
+
+        <!-- Cline -->
+        <div class="card rounded-xl p-5 space-y-3">
+          <h3 class="text-base font-semibold text-white">Cline Extension</h3>
+          <ul class="space-y-2 text-xs text-zinc-300">
+            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-emerald-500">
+              <strong>Claude Models:</strong> API Provider = <code class="text-emerald-400 font-mono">Anthropic</code> · Custom Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1) · Model = <code class="text-zinc-200 font-mono">claude-opus-4-8</code>
+            </li>
+            <li class="p-2.5 rounded bg-zinc-950 border-l-2 border-indigo-500">
+              <strong>GPT Models:</strong> API Provider = <code class="text-indigo-400 font-mono">OpenAI Compatible</code> · Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> · Model = <code class="text-zinc-200 font-mono">gpt-5.6-sol</code>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Cursor & Roo -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="card rounded-xl p-5 space-y-2">
+            <h3 class="text-base font-semibold text-white">Cursor IDE</h3>
+            <p class="text-xs text-zinc-400">Settings → Models → OpenAI API Key. Enable "Override OpenAI Base URL" and set to <code class="text-emerald-400 font-mono">https://agentrouter.org/v1</code>.</p>
+          </div>
+          <div class="card rounded-xl p-5 space-y-2">
+            <h3 class="text-base font-semibold text-white">Roo Code / Kilo Code</h3>
+            <p class="text-xs text-zinc-400">Custom Provider profile: Anthropic Base URL = <code class="text-emerald-400 font-mono">https://agentrouter.org</code> or OpenAI Base URL = <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP APPS (HIDDEN BY DEFAULT) -->
+    <div id="section-opt3" class="space-y-6 hidden">
+      <div class="card rounded-xl p-6 border-emerald-500/30 bg-emerald-950/10 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">Desktop Apps · Confirmed Working ✅</span>
+            <h2 class="text-xl font-bold text-white mt-1.5">Desktop Applications Integration</h2>
+          </div>
+          <a href="https://github.com/samkiell/AgentRouter/tree/main/desktop-apps" target="_blank" rel="noopener"
+             class="btn text-xs px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200">
+            desktop-apps/ on GitHub →
+          </a>
+        </div>
+        <p class="text-sm text-zinc-300">Use AgentRouter inside Claude Desktop, Cowork, Cursor, or any desktop AI application supporting custom API endpoints.</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="card rounded-xl p-5 space-y-3">
+          <h3 class="text-base font-semibold text-white">General Endpoint Rule</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
+              <strong class="text-emerald-400 block mb-1">Claude / Anthropic Style</strong>
+              Base URL: <code class="text-emerald-400 font-mono">https://agentrouter.org</code> (NO /v1)
+            </div>
+            <div class="p-3 rounded bg-zinc-950 border border-zinc-800">
+              <strong class="text-indigo-400 block mb-1">OpenAI Style</strong>
+              Base URL: <code class="text-indigo-400 font-mono">https://agentrouter.org/v1</code> (WITH /v1)
+            </div>
+          </div>
+        </div>
+
+        <div class="card rounded-xl p-5 space-y-3">
+          <h3 class="text-base font-semibold text-white">Claude Desktop Instructions</h3>
+          <ol class="list-decimal list-inside space-y-2 text-xs text-zinc-300">
+            <li>Open Claude Desktop settings.</li>
+            <li>Locate Custom Provider / Custom Endpoint fields.</li>
+            <li>Set Base URL to <code class="text-emerald-400 font-mono">https://agentrouter.org</code></li>
+            <li>Paste your AgentRouter API key.</li>
+            <li>Select model: <code class="font-mono text-zinc-200">claude-opus-4-8</code> or <code class="font-mono text-zinc-200">claude-opus-5</code>.</li>
+          </ol>
+        </div>
+      </div>
     </div>
 
     <!-- Bug or Question Section -->
@@ -337,7 +336,7 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
   </main>
 
   <footer class="border-t border-zinc-800/80 py-8 text-center text-xs text-zinc-500 mt-auto">
-    <p>Made with garri💔 by <a href="https://samkiel.dev" target="_blank" class="text-zinc-300 hover:underline">SAMKIEL</a></p>
+    <p>Made with garri💔 by <a href="https://samkiel.online" target="_blank" class="text-zinc-300 hover:underline">SAMKIEL</a></p>
     <p class="mt-2 flex justify-center gap-4 text-xs">
       <a href="https://github.com/samkiell/AgentRouter" target="_blank" class="hover:text-zinc-300 transition">GitHub Repository</a>
       <span>·</span>
@@ -345,7 +344,7 @@ User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
       <span>·</span>
       <a href="https://github.com/samkiell/AgentRouter/issues" target="_blank" class="hover:text-zinc-300 transition">GitHub Issues</a>
     </p>
-    <p class="mt-3 text-[11px] text-zinc-600">Deployed at agentrouter.samkiel.dev · Unofficial integration guide.</p>
+    <p class="mt-3 text-[11px] text-zinc-600">Deployed at agentrouter.samkiel.online · Unofficial integration guide.</p>
   </footer>
 
   <!-- Toast -->
@@ -406,7 +405,7 @@ const req = https.request({
   path: "/v1/messages",
   method: "POST",
   headers: {
-    "Authorization": \`Bearer \${apiKey}\`,
+    "Authorization": `Bearer ${apiKey}`,
     "x-api-key": apiKey,
     "Content-Type": "application/json",
     "anthropic-version": "2023-06-01",
@@ -469,7 +468,7 @@ const req = https.request({
   path: "/v1/messages",
   method: "POST",
   headers: {
-    "Authorization": \`Bearer \${apiKey}\`,
+    "Authorization": `Bearer ${apiKey}`,
     "x-api-key": apiKey,
     "Content-Type": "application/json",
     "anthropic-version": "2023-06-01",
