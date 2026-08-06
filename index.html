@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgentRouter — Interactive API Dashboard</title>
-  <meta name="description" content="Test AgentRouter models, explore code snippets in 7 languages, and test API endpoints." />
+  <title>AgentRouter Direct API — Interactive Guide & Dashboard</title>
+  <meta name="description" content="Test AgentRouter models, explore code snippets in 7 languages, bypass WAF headers, and debug common errors." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -47,7 +47,7 @@
 
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(7,7,11,0.75);
+      background: rgba(7,7,11,0.78);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem; height: 58px;
@@ -98,8 +98,16 @@
     }
     .hero p {
       color: var(--muted2); font-size: 1.05rem;
-      max-width: 480px; margin: 0 auto 2rem;
+      max-width: 480px; margin: 0 auto 1.5rem;
       line-height: 1.6;
+    }
+    .hero-models {
+      display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem;
+    }
+    .model-chip {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: #a5b4fc; font-size: .75rem; font-weight: 500; font-family: var(--mono);
+      padding: 3px 10px; border-radius: 999px;
     }
 
     .key-wrap { max-width: 500px; margin: 0 auto; }
@@ -295,6 +303,14 @@
     }
     .meta-pill svg { width: 11px; height: 11px; }
 
+    .error-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .error-item {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 12px 14px; font-size: .85rem; line-height: 1.5;
+    }
+    .error-code { font-family: var(--mono); color: #fb7185; font-weight: 600; font-size: .8rem; }
+    .error-fix { color: var(--muted2); font-size: .82rem; margin-top: 2px; }
+
     .fb-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 12px; }
     @media(max-width:560px) { .fb-grid { grid-template-columns: 1fr; } }
     .fb-note { font-size: .8rem; color: var(--muted); margin-top: 10px; }
@@ -314,8 +330,10 @@
     }
     .footer-link:hover { color: var(--text); }
     .footer-link svg { width: 14px; height: 14px; }
+    .footer-built { color: var(--muted2); margin-top: 6px; }
     .footer-built a { color: #a5b4fc; text-decoration: none; }
     .footer-built a:hover { text-decoration: underline; }
+    .footer-disclaimer { font-size: .75rem; color: var(--muted); margin-top: 10px; }
 
     #toast {
       position: fixed; bottom: 24px; right: 24px;
@@ -337,12 +355,13 @@
 <nav>
   <a class="logo" href="#">
     <span class="logo-pulse"></span>
-    AgentRouter
+    AgentRouter Guide
   </a>
   <div class="nav-links">
+    <a class="nav-link" href="#headers">WAF Bypass</a>
     <a class="nav-link" href="#playground">Playground</a>
     <a class="nav-link" href="#snippets">Snippets</a>
-    <a class="nav-link" href="#feedback">Feedback</a>
+    <a class="nav-link" href="#errors">Common Errors</a>
     <a class="nav-link" href="https://github.com/samkiell/AgentRouter" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
       GitHub
@@ -353,10 +372,16 @@
 <div class="hero">
   <div class="hero-badge">
     <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
-    OpenAI-Compatible API
+    OpenAI-Compatible API &amp; WAF Bypass
   </div>
-  <h1>The Fastest Way to<br />Reach Any Model</h1>
-  <p>Drop your API key below, pick a model, and start building — no setup required.</p>
+  <h1>AgentRouter Direct API</h1>
+  <p>Use AgentRouter as a standard API endpoint. Drop your API key below to test endpoints and pre-fill code snippets.</p>
+
+  <div class="hero-models">
+    <span class="model-chip">gpt-5.6-sol</span>
+    <span class="model-chip">claude-opus-4-8</span>
+    <span class="model-chip">claude-opus-5</span>
+  </div>
 
   <div class="key-wrap">
     <div class="key-box">
@@ -375,9 +400,51 @@
 
 <main>
 
-  <section id="playground">
+  <!-- 1. Get Key -->
+  <section id="key">
     <div class="sec-head">
       <span class="sec-num">1</span>
+      <div>
+        <div class="sec-title">Get an API Key</div>
+        <div class="sec-desc">Sign up on AgentRouter to retrieve your API key.</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+      <div>
+        <div style="font-weight:600; font-size:.95rem;">Official Registration</div>
+        <div style="color:var(--muted2); font-size:.83rem; margin-top:2px;">Create an account to get free access tokens.</div>
+      </div>
+      <a href="https://agentrouter.org/register?aff=uhNr" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+        Get free key →
+      </a>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- 2. WAF Bypass -->
+  <section id="headers">
+    <div class="sec-head">
+      <span class="sec-num">2</span>
+      <div>
+        <div class="sec-title">Required Headers (WAF Bypass)</div>
+        <div class="sec-desc">Send these headers on every request or you will receive an <code style="color:#fb7185">unauthorized client</code> error.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="margin-bottom:8px; font-size:.78rem; color:var(--muted2);">Base URL: <code style="color:#a5b4fc; font-family:var(--mono)">https://agentrouter.org/v1</code></div>
+      <pre class="code-block" style="border-radius:var(--r-sm); font-size:.82rem;">Originator: codex_cli_rs
+Version: 0.101.0
+User-Agent: codex_cli_rs/0.101.0 (Mac OS 26.0.1; arm64) Apple_Terminal/464</pre>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- 3. Live Playground -->
+  <section id="playground">
+    <div class="sec-head">
+      <span class="sec-num">3</span>
       <div>
         <div class="sec-title">Live Playground</div>
         <div class="sec-desc">Configure your request. A ready-to-run cURL command is always generated below.</div>
@@ -439,12 +506,13 @@
 
   <hr />
 
+  <!-- 4. Code Snippets -->
   <section id="snippets">
     <div class="sec-head">
-      <span class="sec-num">2</span>
+      <span class="sec-num">4</span>
       <div>
         <div class="sec-title">Code Snippets</div>
-        <div class="sec-desc">Select a language. Your API key is injected automatically if set above.</div>
+        <div class="sec-desc">Select a language. Your API key is pre-filled automatically when entered above.</div>
       </div>
     </div>
 
@@ -478,12 +546,42 @@
 
   <hr />
 
+  <!-- 5. Common Errors -->
+  <section id="errors">
+    <div class="sec-head">
+      <span class="sec-num">5</span>
+      <div>
+        <div class="sec-title">Common Errors</div>
+        <div class="sec-desc">Quick reference for troubleshooting API response errors.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="error-list">
+        <div class="error-item">
+          <div class="error-code">unauthorized client</div>
+          <div class="error-fix">Missing required WAF headers (<code style="color:#a5b4fc">Originator</code>, <code style="color:#a5b4fc">Version</code>, <code style="color:#a5b4fc">User-Agent</code>). Include them in all requests.</div>
+        </div>
+        <div class="error-item">
+          <div class="error-code">content-blocked</div>
+          <div class="error-fix">Prompt filter triggered or prohibited phrase detected. Simplify prompt or switch to another model.</div>
+        </div>
+        <div class="error-item">
+          <div class="error-code">no available channel</div>
+          <div class="error-fix">Selected model is temporarily out of capacity on the server. Try again in a few seconds or switch models.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- 6. Feedback -->
   <section id="feedback">
     <div class="sec-head">
-      <span class="sec-num">3</span>
+      <span class="sec-num">6</span>
       <div>
         <div class="sec-title">Feedback &amp; Bug Reports</div>
-        <div class="sec-desc">Doesn't work? Something confusing? Let us know.</div>
+        <div class="sec-desc">Doesn't work or something unclear? Report directly to GitHub.</div>
       </div>
     </div>
     <div class="card">
@@ -523,14 +621,15 @@
     </a>
     <a class="footer-link" href="https://agentrouter.org/register?aff=uhNr" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      Get API Key
+      Get Free API Key
     </a>
     <a class="footer-link" href="https://github.com/samkiell/AgentRouter/issues" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       Issues
     </a>
   </div>
-  <p class="footer-built">Built by <a href="https://samkiel.dev" target="_blank">samkiel.dev</a> &nbsp;·&nbsp; AgentRouter is an unofficial integration</p>
+  <p class="footer-built">Made with garri💔 by <a href="https://samkiel.dev" target="_blank">SAMKIEL</a></p>
+  <p class="footer-disclaimer">Unofficial workaround. Use at your own risk.</p>
 </footer>
 
 <div id="toast"></div>
