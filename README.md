@@ -8,7 +8,7 @@ An unofficial, complete integration guide for **AgentRouter** — an OpenAI & An
 
 Launch the interactive Web Dashboard directly to test live API calls, generate cURL commands, and view setup guides:
 
-👉 **[agentrouter.samkiel.dev](https://agentrouter.samkiel.dev)** *(or open [`dash/index.html`](dash/index.html) locally)*
+👉 **[agentrouter.samkiel.dev](https://agentrouter.samkiel.dev)**
 
 ---
 
